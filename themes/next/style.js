@@ -144,6 +144,41 @@ const EDITORIAL_CSS = `
 
   /* ===== InfoCard 作者名 ===== */
   #theme-next #left .text-2xl { font-family: var(--serif); }
+
+  /* ===== 文章详情(NotionPage 正文不动) ===== */
+  #theme-next #article-wrapper { background-color: transparent; }
+  /* 版权声明卡:灰底蓝边 → 宣纸米青铜边 */
+  #theme-next ul.bg-gray-100 {
+    background-color: var(--paper);
+    border-left-color: var(--bronze);
+  }
+  /* 相关文章卡 */
+  #theme-next .my-4.border { border-color: var(--line); }
+
+  /* ===== 归档 ===== */
+  #theme-next li.hover\\:border-gray-500:hover { border-left-color: var(--bronze); }
+  #theme-next a.hover\\:underline:hover { color: var(--blue); }
+
+  /* ===== 分类/标签索引 hover ===== */
+  #theme-next .hover\\:bg-gray-100:hover { background-color: var(--paper); }
+
+  /* ===== 标签/分类横向 StickyBar ===== */
+  #theme-next #sticky-bar .bg-white {
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(26,32,44,.06);
+  }
+
+  /* ===== Footer ===== */
+  #theme-next footer {
+    border-top: 1px solid var(--line);
+    color: #9ca3af;
+  }
+  #theme-next footer h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 14px;
+  }
 `
 
 /**

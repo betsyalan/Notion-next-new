@@ -56,4 +56,12 @@ describe('next 主题书院风覆盖层', () => {
     expect(html).toContain('#theme-next #nav li')
     expect(html).toContain('#tags-group a')
   })
+
+  it('开启时包含详情页与页脚覆盖规则', () => {
+    editorialFlag = true
+    const html = renderToStaticMarkup(<Style />)
+    expect(html).toContain('#theme-next ul.bg-gray-100')
+    expect(html).toContain('#theme-next footer h1')
+    expect(html).toContain('hover\\:border-gray-500')
+  })
 })
