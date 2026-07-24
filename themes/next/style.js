@@ -31,7 +31,7 @@ const EDITORIAL_CSS = `
     background-image: linear-gradient(var(--blue), var(--blue));
   }
   #theme-next .menu-link:hover { color: var(--blue); }
-  #theme-next a.hover\:text-blue-500:hover { color: var(--blue); }
+  #theme-next a.hover\\:text-blue-500:hover { color: var(--blue); }
   #theme-next .font-serif { font-family: var(--serif); }
   #theme-next .text-3xl { font-family: var(--serif); }
 
@@ -44,8 +44,8 @@ const EDITORIAL_CSS = `
     border: 1px solid var(--line);
     box-shadow: 0 1px 3px rgba(26,32,44,.06);
   }
-  #theme-next .hover\:shadow-xl:hover,
-  #theme-next .md\:hover\:shadow-2xl:hover {
+  #theme-next .hover\\:shadow-xl:hover,
+  #theme-next .md\\:hover\\:shadow-2xl:hover {
     box-shadow: 0 6px 18px rgba(26,32,44,.10);
   }
 
@@ -86,6 +86,9 @@ const EDITORIAL_CSS = `
  * 因为 styled-jsx 的 SWC 插件无法处理条件渲染中的 style 标签(会 panic),
  * 且编译后的 JSXStyle 在 renderToStaticMarkup 中不输出内容,无法测试。
  * 原生 <style> 同为全局生效,行为等价。
+ * 覆盖层用 dangerouslySetInnerHTML 输出:React 会把 <style> 文本子节点的 >
+ * 转义为 &gt;,且 style 是 raw-text 元素不会反转义;EDITORIAL_CSS 为仓库内
+ * 静态常量,无注入面。
  * @returns
  */
 const Style = () => {

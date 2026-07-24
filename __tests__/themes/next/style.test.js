@@ -44,5 +44,7 @@ describe('next 主题书院风覆盖层', () => {
     expect(html).toContain('#top-nav #sticky-nav > div.bg-black')
     expect(html).toContain('linear-gradient(165deg')
     expect(html).toContain('.logo::after')
+    // 防回归:模板字符串中的 \: 需写成 \\: 才能保留反斜杠
+    expect(html).toContain('hover\\:shadow-xl')
   })
 })
