@@ -77,6 +77,73 @@ const EDITORIAL_CSS = `
     background: var(--bronze);
   }
   #theme-next #left .text-gray-300 { color: var(--gray); }
+
+  /* ===== 左栏菜单:hover 蓝字 ===== */
+  #theme-next #nav li.hover\\:bg-gray-700:hover {
+    background-color: transparent;
+    color: var(--blue);
+    box-shadow: none;
+  }
+
+  /* ===== 左栏搜索框:灰底 → 白底细边 ===== */
+  #theme-next #left div.bg-gray-100 {
+    background-color: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  #theme-next #left input.bg-gray-100 {
+    background-color: transparent;
+    color: var(--ink);
+  }
+
+  /* ===== 文章卡 ===== */
+  #theme-next #posts-wrapper a.text-3xl {
+    font-size: 26px;
+    line-height: 1.4;
+  }
+  #theme-next #posts-wrapper a.text-3xl .menu-link { color: #374151; }
+  #theme-next #posts-wrapper a.text-3xl:hover .menu-link { color: var(--blue); }
+  #theme-next #posts-wrapper p {
+    color: #4b5563;
+    line-height: 1.9;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* 阅读全文按钮:深墨 → hover 蓝 */
+  #theme-next #posts-wrapper a.bg-gray-800 {
+    background-color: var(--ink);
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+  #theme-next #posts-wrapper a.bg-gray-800:hover {
+    background-color: var(--blue);
+    text-decoration: none;
+  }
+
+  /* ===== 右栏:latest/分类 hover 蓝底,选中态蓝 ===== */
+  #theme-next #right .hover\\:bg-gray-500:hover,
+  #theme-next #left .hover\\:bg-gray-500:hover {
+    background-color: var(--blue);
+    color: #fff;
+  }
+  #theme-next aside .bg-gray-600 { background-color: var(--blue); }
+
+  /* ===== 右栏标签云:灰字 hover 蓝 ===== */
+  #theme-next #right #tags-group a {
+    background-color: transparent;
+    box-shadow: none;
+    color: #9ca3af;
+  }
+  #theme-next #right #tags-group a:hover {
+    background-color: transparent;
+    color: var(--blue);
+  }
+  #theme-next #right #tags-group a:hover div { color: var(--blue); }
+
+  /* ===== InfoCard 作者名 ===== */
+  #theme-next #left .text-2xl { font-family: var(--serif); }
 `
 
 /**

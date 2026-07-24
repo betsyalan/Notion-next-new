@@ -47,4 +47,13 @@ describe('next 主题书院风覆盖层', () => {
     // 防回归:模板字符串中的 \: 需写成 \\: 才能保留反斜杠
     expect(html).toContain('hover\\:shadow-xl')
   })
+
+  it('开启时包含文章卡与侧栏覆盖规则', () => {
+    editorialFlag = true
+    const html = renderToStaticMarkup(<Style />)
+    expect(html).toContain('#posts-wrapper a.text-3xl')
+    expect(html).toContain('#posts-wrapper a.bg-gray-800')
+    expect(html).toContain('#theme-next #nav li')
+    expect(html).toContain('#tags-group a')
+  })
 })
