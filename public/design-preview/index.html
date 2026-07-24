@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>风格预览 · 警校学习规划</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; background:#f4f4f5; color:#18181b; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:48px 20px; }
+  h1 { font-size:28px; margin-bottom:8px; }
+  .sub { color:#71717a; margin-bottom:40px; font-size:15px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; max-width:1080px; width:100%; }
+  a.card { display:block; background:#fff; border:1px solid #e4e4e7; border-radius:12px; padding:28px 24px; text-decoration:none; color:inherit; transition:transform .2s ease, box-shadow .2s ease; }
+  a.card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,.08); }
+  .tag { display:inline-block; font-size:12px; letter-spacing:.1em; padding:4px 10px; border-radius:999px; margin-bottom:14px; }
+  .a .tag { background:#eef2ff; color:#3b5bdb; }
+  .b .tag { background:#18181b; color:#fff; }
+  .c .tag { background:#fff7ed; color:#c2410c; }
+  .d .tag { background:#18181b; color:#4ade80; }
+  h2 { font-size:19px; margin-bottom:10px; }
+  p { font-size:14px; line-height:1.7; color:#52525b; }
+  .meta { margin-top:16px; font-size:12px; color:#a1a1aa; }
+  footer { margin-top:48px; font-size:12px; color:#a1a1aa; }
+</style>
+</head>
+<body>
+  <h1>网站风格预览</h1>
+  <p class="sub">警校学习规划 · 四种候选风格，点击进入静态测试页（仅预览，不影响线上）</p>
+  <div class="grid">
+    <a class="card a" href="style-next-editorial.html">
+      <span class="tag">新 · next 主题落地预览</span>
+      <h2>next 主题 × 经典书院风</h2>
+      <p>1:1 还原当前 next 主题首页结构（左栏菜单/信息卡、文章卡片流、右侧栏、页脚），仅应用方案 A 的文字与色彩：衬线标题 + 学术蓝 + 暖白底色。</p>
+      <div class="meta">结构不变 / 衬线 / #2f6fde / #fbfaf8</div>
+    </a>
+    <a class="card a" href="style-a-editorial.html">
+      <span class="tag">方案 A · 现行优化</span>
+      <h2>经典书院风</h2>
+      <p>在现有 next 主题基础上优化：衬线标题 + 改良学术蓝，修正字重过轻、对比不足的问题。改动最小、迁移成本最低。</p>
+      <div class="meta">衬线 / 学术蓝 #2f6fde / 大留白</div>
+    </a>
+    <a class="card b" href="style-b-swiss.html">
+      <span class="tag">方案 B · 编辑推荐</span>
+      <h2>瑞士现代网格</h2>
+      <p>设计系统推荐风格：严格 12 栏网格、无衬线、黑白为主 + 单一强调色。理性、秩序感强，适合"规划指南"类严肃内容。</p>
+      <div class="meta">网格 / 黑白 + 玫红点缀 / 强秩序</div>
+    </a>
+    <a class="card c" href="style-c-magazine.html">
+      <span class="tag">方案 C · 视觉冲击</span>
+      <h2>杂志编辑风</h2>
+      <p>大图封面 + 粗黑大标题 + 多栏排版，像翻阅一本规划杂志。适合以专题、长文为主的内容形态。</p>
+      <div class="meta">大图 / 粗黑标题 / 多栏</div>
+    </a>
+    <a class="card d" href="style-d-dark.html">
+      <span class="tag">方案 D · 深色现代</span>
+      <h2>深色沉浸风</h2>
+      <p>暗色背景 + 玻璃拟态卡片 + 荧光绿点缀，年轻、科技感。贴合"网络安全与执法"的专业气质。</p>
+      <div class="meta">暗色 / 玻璃卡片 / 荧光绿</div>
+    </a>
+  </div>
+  <footer>仅静态预览页 · 位于 public/design-preview/ · 选定后再落地到主题</footer>
+</body>
+</html>

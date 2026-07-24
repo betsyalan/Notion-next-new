@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>next 主题 · 经典书院风 — 警校学习规划</title>
+<style>
+  /* ===== 方案 A 设计令牌（仅文字/色彩层面的改动） ===== */
+  :root {
+    --ink:#1a202c;          /* 主文字色 */
+    --blue:#2f6fde;         /* 交互强调色（链接/hover，替代默认 #4e80ee） */
+    --navy:#1E3A5F;         /* 学术藏青（标题文字/点缀） */
+    --bronze:#C08A3E;       /* 青铜点缀（装饰线/分隔符） */
+    --paper:#f7f1e6;        /* 宣纸米（Logo 块/顶栏底色） */
+    --gray:#6b7280;         /* 次要文字 */
+    --line:#e8e6e1;         /* 分隔线（暖灰） */
+    --bg:#fbfaf8;           /* 页面底色（替代默认 #eeedee） */
+    --serif:"Noto Serif SC","Songti SC","STSong",serif;
+    --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:var(--sans); background:var(--bg); color:var(--ink); font-size:15px; line-height:1.7; }
+  a { text-decoration:none; color:inherit; }
+  .wrap { max-width:1280px; margin:0 auto; padding:0 16px; }
+
+  /* 预览提示条 */
+  .preview-note { background:#faf7f2; border-bottom:1px solid var(--line); text-align:center; padding:8px; font-size:12px; color:#8a6d3b; letter-spacing:.05em; }
+
+  /* ===== 结构还原：next 主题 ===== */
+
+  /* 顶部装饰线（桌面端）：原灰黑 → 青铜细线 */
+  .top-line { height:2px; background:var(--bronze); display:none; }
+  @media (min-width:1024px){ .top-line { display:block; } }
+
+  /* 移动端顶部导航（TopNav，lg 以下显示）：原纯黑 → 宣纸米 + 青铜底线 */
+  .topnav { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:var(--paper); color:var(--navy); border-bottom:2px solid var(--bronze); }
+  .topnav .logo-m { font-family:var(--serif); font-size:17px; font-weight:700; letter-spacing:.12em; }
+  .topnav svg { width:20px; height:20px; stroke:var(--navy); }
+  @media (min-width:1024px){ .topnav { display:none; } }
+
+  /* 三栏主区 */
+  main.layout { display:flex; justify-content:center; gap:16px; padding:16px 16px 48px; }
+  @media (min-width:1024px){ main.layout { padding-top:24px; } }
+
+  aside.left  { width:240px; flex:none; display:none; }
+  aside.right { width:240px; flex:none; display:none; }
+  @media (min-width:1024px){ aside.left { display:block; } }
+  @media (min-width:1280px){ aside.right { display:block; } }
+  section.center { flex:1 1 auto; max-width:100%; min-width:0; }
+  @media (min-width:1024px){ section.center { max-width:768px; } }
+  @media (min-width:1280px){ section.center { max-width:896px; } }
+
+  /* 卡片（Card 组件） */
+  .card { background:#fff; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,32,44,.06); padding:16px 8px; transition:box-shadow .2s; }
+  .card:hover { box-shadow:0 6px 18px rgba(26,32,44,.10); }
+  .card + .card, .card + .sticky-box, .sticky-box .card { margin-top:16px; }
+  .sticky-box { position:sticky; top:16px; }
+
+  /* 左栏 Logo 块（Logo 组件）：原纯黑底 → 宣纸米渐变 + 藏青字 + 青铜饰线，浅色书院风 */
+  .logo-block { background:linear-gradient(165deg,#fbf7ee 0%,var(--paper) 60%,#f1e8d6 100%);
+    border-bottom:3px solid var(--bronze);
+    min-height:128px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; margin:-16px -8px 0; padding:20px 16px; }
+  .logo-block .site-title { font-family:var(--serif); font-size:21px; font-weight:700; color:var(--navy); letter-spacing:.18em; text-indent:.18em; }
+  .logo-block .rule { width:44px; height:2px; background:var(--bronze); }
+  .logo-block .site-desc { font-size:12px; font-weight:300; color:var(--gray); text-align:center; letter-spacing:.06em; }
+
+  /* 左栏菜单（MenuList） */
+  .menu { padding:12px 8px 0; }
+  .menu a { display:flex; align-items:center; gap:10px; padding:6px 8px; font-size:14px; color:#4b5563; line-height:2; }
+  .menu a svg { width:15px; height:15px; stroke:#6b7280; flex:none; }
+  .menu a:hover { color:var(--blue); }
+  .menu a:hover svg { stroke:var(--blue); }
+  .menu .badge { margin-left:auto; background:#d1d5db; color:#f9fafb; border-radius:6px; font-size:11px; padding:0 6px; }
+
+  /* 左栏搜索框 */
+  .search-box { margin:8px 8px 4px; display:flex; align-items:center; border:1px solid var(--line); border-radius:4px; padding:6px 10px; gap:8px; }
+  .search-box svg { width:14px; height:14px; stroke:#9ca3af; flex:none; }
+  .search-box input { border:none; outline:none; font-size:13px; width:100%; background:transparent; color:var(--ink); font-family:var(--sans); }
+
+  /* 左栏信息卡（InfoCard）：头像为 <img>，运行时由 Notion 站点图标提供，不在主题内写死 */
+  .info { text-align:center; padding:16px 8px 8px; }
+  .info .avatar { width:120px; height:120px; border-radius:50%; margin:0 auto; object-fit:cover; display:block; }
+  .info .author { font-family:var(--serif); font-size:22px; font-weight:700; padding:10px 0 4px; }
+  .info .bio { font-weight:300; font-size:13px; color:var(--gray); padding-bottom:10px; }
+  .info .social { display:flex; justify-content:center; gap:14px; padding-bottom:8px; }
+  .info .social svg { width:18px; height:18px; fill:#6b7280; }
+  .info .social a:hover svg { fill:var(--blue); }
+  .info .stats { font-size:12px; font-weight:300; color:var(--gray); }
+  .info .stats b { font-weight:500; color:var(--ink); }
+
+  /* 移动端公告卡 */
+  .notice-m { display:block; margin:0 0 8px; }
+  @media (min-width:1024px){ .notice-m { display:none; } }
+  .notice-m .card { padding:14px 16px; font-size:13px; color:var(--gray); }
+  .notice-m b { color:var(--ink); font-family:var(--serif); }
+
+  /* 文章卡（BlogPostCard） */
+  .post { background:#fff; border:1px solid var(--line); box-shadow:0 1px 3px rgba(26,32,44,.06); padding:32px; margin-bottom:16px; transition:box-shadow .2s; }
+  .post:hover { box-shadow:0 6px 18px rgba(26,32,44,.10); }
+  @media (max-width:1023px){ .post { padding:20px 16px; } }
+
+  .post h2 { font-family:var(--serif); font-size:26px; font-weight:700; line-height:1.4; text-align:center; }
+  .post h2 a { color:#374151;
+    background-image:linear-gradient(var(--blue),var(--blue));
+    background-repeat:no-repeat; background-position:bottom center;
+    background-size:0 2px; transition:background-size .25s ease-in-out, color .2s; }
+  .post h2 a:hover { color:var(--blue); background-size:100% 2px; }
+
+  .post .meta { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:4px; margin-top:10px; font-size:13px; font-weight:300; color:#6b7280; }
+  .post .meta a:hover { color:var(--blue); }
+  .post .meta svg { width:12px; height:12px; stroke:#9ca3af; vertical-align:-1px; margin-right:3px; }
+  .post .meta .sep { margin:0 8px; color:#d1d5db; }
+  .post .meta .tag { margin-left:12px; font-size:12px; color:#9ca3af; }
+  .post .meta .tag:hover { color:var(--blue); }
+
+  .post .preview { margin-top:16px; font-size:14px; font-weight:300; line-height:1.9; color:#4b5563;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  .post .more-row { text-align:right; border-top:1px dashed var(--line); margin-top:24px; padding-top:24px; }
+  .post .more { display:inline-block; background:var(--ink); color:#fff; font-size:13px; padding:10px 16px; transition:background .2s; }
+  .post .more:hover { background:var(--blue); }
+  .post .more svg { width:11px; height:11px; stroke:#fff; vertical-align:0; margin-left:4px; }
+
+  /* 右栏卡片通用头 */
+  .side-head { display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:300; color:#4b5563; padding:0 8px 8px; }
+  .side-head svg { width:13px; height:13px; stroke:#6b7280; vertical-align:-2px; margin-right:6px; }
+  .side-head .more-link { font-size:12px; color:#6b7280; }
+  .side-head .more-link:hover { color:var(--blue); text-decoration:underline; }
+
+  /* 最新文章 */
+  .latest a { display:block; font-size:12px; font-weight:300; color:#6b7280; padding:6px 8px; margin:2px 0; line-height:1.6; transition:all .2s; }
+  .latest a:hover { background:var(--blue); color:#fff; }
+
+  /* 分类 */
+  .cats a { display:flex; align-items:center; width:100%; font-size:13px; font-weight:300; color:#6b7280; padding:4px 8px; transition:all .2s; }
+  .cats a svg { width:13px; height:13px; stroke:#9ca3af; margin-right:8px; }
+  .cats a:hover { background:var(--blue); color:#fff; }
+  .cats a:hover svg { stroke:#fff; }
+
+  /* 标签 */
+  .tags-cloud { padding:4px 8px 0; display:flex; flex-wrap:wrap; gap:8px; }
+  .tags-cloud a { font-size:12px; font-weight:300; color:#9ca3af; }
+  .tags-cloud a:hover { color:var(--blue); }
+  .tags-cloud a svg { width:11px; height:11px; stroke:#9ca3af; vertical-align:-1px; margin-right:2px; }
+
+  /* 页脚（Footer） */
+  footer { background:#fff; border-top:1px solid var(--line); text-align:center; font-size:13px; line-height:2; color:#9ca3af; padding:24px 16px; }
+  footer a { color:inherit; }
+  footer .author-link { font-weight:700; text-decoration:underline; color:var(--ink); }
+  footer .heart { color:#ef4444; }
+  footer .site-title-f { font-family:var(--serif); font-weight:700; color:var(--ink); font-size:14px; }
+  footer .powered { font-family:var(--serif); font-size:12px; color:#6b7280; }
+  footer .powered a { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="preview-note">风格预览 · next 主题 × 方案 A「经典书院风」：结构 1:1 还原，仅改文字与色彩（非线上页面）</div>
+
+<!-- 移动端顶部导航（TopNav） -->
+<div class="topnav">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  <div class="logo-m">警校学习规划</div>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+</div>
+
+<!-- 顶部黑线装饰 -->
+<div class="top-line"></div>
+
+<main class="layout wrap">
+
+  <!-- 左侧栏（SideAreaLeft） -->
+  <aside class="left">
+    <div class="card" style="padding-bottom:16px;">
+      <div class="logo-block">
+        <div class="site-title">警校学习规划</div>
+        <div class="rule"></div>
+        <div class="site-desc">面向警校生的大学规划与公安联考指南</div>
+      </div>
+      <nav class="menu">
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>首页</a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>分类</a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1"/></svg>标签</a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><line x1="10" y1="12" x2="14" y2="12"/></svg>归档<span class="badge">12</span></a>
+      </nav>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input type="text" placeholder="搜索文章…">
+      </div>
+    </div>
+
+    <div class="sticky-box">
+      <div class="card info">
+        <img class="avatar" src="../avatar.png" alt="警校学习规划">
+        <div class="author">警校学习规划</div>
+        <div class="bio">专业学习路线 · 编程进阶 · 联考冲刺，一篇一篇写清楚。</div>
+        <div class="social">
+          <a href="#" title="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+          <a href="#" title="邮箱"><svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 3.2V18h16V7.2l-8 5.6-8-5.6zM5.5 6h13L12 10.7 5.5 6z"/></svg></a>
+          <a href="#" title="RSS"><svg viewBox="0 0 24 24"><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9zM6.18 15.64a2.18 2.18 0 1 0 0 4.36 2.18 2.18 0 0 0 0-4.36z"/></svg></a>
+        </div>
+        <div class="stats"><b>12</b> 文章</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 中央内容 -->
+  <section class="center">
+
+    <!-- 移动端公告 -->
+    <div class="notice-m">
+      <div class="card"><b>公告</b> · 欢迎来到我的博客，大学规划与联考指南持续更新中。</div>
+    </div>
+
+    <!-- 文章卡片 1 -->
+    <article class="post">
+      <h2><a href="#">郑州警察学院网络安全与执法专业·大学四年规划指南</a></h2>
+      <div class="meta">
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>大学规划</a>
+        <span class="sep">|</span>
+        <a href="#">2026-07-24</a>
+        <a class="tag" href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>计划</a>
+        <a class="tag" href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>推荐</a>
+      </div>
+      <p class="preview">从大一到大四的完整路径：专业课程、证书竞赛、联考节点逐一拆解。大一上学期重点在适应警务化管理和打好数学、法律基础；大一下学期开始接触计算机基础与编程入门，同时保持体能训练不掉队……</p>
+      <div class="more-row"><a class="more" href="#">阅读全文<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+    </article>
+
+    <!-- 文章卡片 2 -->
+    <article class="post">
+      <h2><a href="#">公安联考四年规划指南</a></h2>
+      <div class="meta">
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>公安联考</a>
+        <span class="sep">|</span>
+        <a href="#">2026-07-24</a>
+        <a class="tag" href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>郑州警察学院</a>
+      </div>
+      <p class="preview">联考不是大四的事。行测、申论、公安专业科目的积累节奏，从入学第一天就该排进日程。本文按学期拆解每个阶段的复习重点、资料选择和体能达标线，给出一份可以直接照做的时间表……</p>
+      <div class="more-row"><a class="more" href="#">阅读全文<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+    </article>
+
+    <!-- 文章卡片 3 -->
+    <article class="post">
+      <h2><a href="#">零编程基础·专属进阶蓝图</a></h2>
+      <div class="meta">
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>编程</a>
+        <span class="sep">|</span>
+        <a href="#">2026-07-23</a>
+      </div>
+      <p class="preview">编程基础与未来高阶专业课之间的"桥梁"课怎么搭？给零基础网安专业学生的一条最小可行路线：先 Python 后 C，先脚本后原理，每个阶段配什么书、做什么小项目，全部列清楚……</p>
+      <div class="more-row"><a class="more" href="#">阅读全文<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a></div>
+    </article>
+
+  </section>
+
+  <!-- 右侧栏（SideAreaRight） -->
+  <aside class="right">
+    <div class="sticky-box">
+      <div class="card latest">
+        <div class="side-head">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>最新文章</span>
+        </div>
+        <a href="#">郑州警察学院网络安全与执法专业·大学四年规划指南</a>
+        <a href="#">公安联考四年规划指南</a>
+        <a href="#">零编程基础·专属进阶蓝图</a>
+        <a href="#">警务化管理下的时间管理方法</a>
+        <a href="#">体能训练学期达标计划</a>
+        <a href="#">法律基础课怎么学不踩坑</a>
+      </div>
+
+      <div class="card">
+        <div class="side-head">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>分类</span>
+          <a class="more-link" href="#">更多 »</a>
+        </div>
+        <div class="cats">
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>大学规划(5)</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>公安联考(4)</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>编程(3)</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="side-head">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1"/></svg>标签</span>
+          <a class="more-link" href="#">更多 »</a>
+        </div>
+        <div class="tags-cloud">
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>计划</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>推荐</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>郑州警察学院</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>联考</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>Python</a>
+          <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/></svg>体能</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<!-- 页脚（Footer） -->
+<footer>
+  <div>© 2024-2026 <span class="heart">♥</span> <a class="author-link" href="#">警校学习规划</a>.</div>
+  <div class="site-title-f">警校学习规划</div>
+  <div class="powered">Powered by <a href="#">NotionNext</a>.</div>
+</footer>
+
+</body>
+</html>

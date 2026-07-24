@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 A · 经典书院风 — 警校学习规划</title>
+<style>
+  :root { --ink:#1a202c; --blue:#2f6fde; --gray:#6b7280; --line:#e8e6e1; --bg:#fbfaf8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Noto Sans SC","PingFang SC",sans-serif; background:var(--bg); color:var(--ink); }
+  .banner { background:#faf7f2; border-bottom:1px solid var(--line); text-align:center; padding:10px; font-size:12px; color:#8a6d3b; letter-spacing:.05em; }
+  header { max-width:880px; margin:0 auto; padding:28px 24px 20px; display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--line); }
+  .logo { font-family:"Noto Serif SC","Songti SC",serif; font-size:24px; font-weight:700; }
+  nav a { margin-left:24px; font-size:14px; color:var(--gray); text-decoration:none; transition:color .2s; }
+  nav a:hover, nav a.on { color:var(--blue); }
+  main { max-width:880px; margin:0 auto; padding:48px 24px 64px; }
+  .hero { margin-bottom:56px; }
+  .hero .kicker { font-size:13px; letter-spacing:.25em; color:var(--blue); margin-bottom:16px; }
+  .hero h1 { font-family:"Noto Serif SC","Songti SC",serif; font-size:clamp(28px,5vw,40px); line-height:1.35; font-weight:700; margin-bottom:16px; }
+  .hero p { color:var(--gray); font-size:15px; line-height:1.9; max-width:560px; }
+  .section-title { font-family:"Noto Serif SC",serif; font-size:20px; font-weight:700; margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid var(--ink); display:inline-block; }
+  article { padding:28px 0; border-bottom:1px solid var(--line); display:grid; grid-template-columns:88px 1fr; gap:20px; }
+  .date { font-family:"Noto Serif SC",serif; color:var(--gray); font-size:13px; line-height:1.5; padding-top:4px; }
+  .date b { display:block; font-size:26px; color:var(--ink); font-weight:700; }
+  h3 { font-family:"Noto Serif SC",serif; font-size:19px; font-weight:700; line-height:1.5; margin-bottom:8px; }
+  h3 a { color:var(--ink); text-decoration:none; background-image:linear-gradient(var(--blue),var(--blue)); background-size:0 2px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .25s; }
+  h3 a:hover { background-size:100% 2px; }
+  .excerpt { font-size:14px; color:var(--gray); line-height:1.8; margin-bottom:10px; }
+  .tags { font-size:12px; color:var(--blue); }
+  .tags span { margin-right:12px; }
+  footer { text-align:center; padding:32px; font-size:12px; color:#9ca3af; border-top:1px solid var(--line); }
+  @media (max-width:600px){ article{grid-template-columns:1fr;} .date b{display:inline;font-size:13px;} header{flex-direction:column;gap:12px;} nav a{margin:0 16px 0 0;} }
+</style>
+</head>
+<body>
+  <div class="banner">风格预览 · 方案 A：经典书院风（现行 next 主题的优化版，非线上页面）</div>
+  <header>
+    <div class="logo">警校学习规划</div>
+    <nav>
+      <a class="on" href="#">首页</a><a href="#">大学规划</a><a href="#">编程</a><a href="#">公安联考</a><a href="#">关于</a>
+    </nav>
+  </header>
+  <main>
+    <div class="hero">
+      <div class="kicker">FOUR-YEAR PLAN</div>
+      <h1>把四年，过成一份<br>可执行的规划。</h1>
+      <p>面向警校生的大学规划与公安联考指南：专业学习路线、编程进阶蓝图、联考冲刺计划，一篇一篇写清楚。</p>
+    </div>
+    <div class="section-title">最新文章</div>
+    <article>
+      <div class="date"><b>24</b>2026.07</div>
+      <div>
+        <h3><a href="#">郑州警察学院网络安全与执法专业·大学四年规划指南</a></h3>
+        <p class="excerpt">从大一到大四的完整路径：专业课程、证书竞赛、联考节点逐一拆解，给出每个学期该做什么的明确清单。</p>
+        <div class="tags"><span>大学规划</span><span>计划</span><span>推荐</span></div>
+      </div>
+    </article>
+    <article>
+      <div class="date"><b>24</b>2026.07</div>
+      <div>
+        <h3><a href="#">公安联考四年规划指南</a></h3>
+        <p class="excerpt">联考不是大四的事。行测、申论、公安专业科目的积累节奏，从入学第一天就该排进日程。</p>
+        <div class="tags"><span>公安联考</span><span>郑州警察学院</span></div>
+      </div>
+    </article>
+    <article>
+      <div class="date"><b>23</b>2026.07</div>
+      <div>
+        <h3><a href="#">零编程基础·专属进阶蓝图</a></h3>
+        <p class="excerpt">编程基础与未来高阶专业课之间的"桥梁"课怎么搭？给零基础网安专业学生的一条最小可行路线。</p>
+        <div class="tags"><span>编程</span></div>
+      </div>
+    </article>
+  </main>
+  <footer>警校学习规划 · 方案 A 预览</footer>
+</body>
+</html>

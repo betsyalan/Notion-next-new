@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 C · 杂志编辑风 — 警校学习规划</title>
+<style>
+  :root { --bg:#ffffff; --fg:#111827; --muted:#6b7280; --accent:#c2410c; --line:#e5e7eb; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Noto Sans SC","PingFang SC",sans-serif; background:var(--bg); color:var(--fg); }
+  .banner { background:#fff7ed; color:var(--accent); text-align:center; padding:10px; font-size:12px; letter-spacing:.05em; }
+  header { max-width:1200px; margin:0 auto; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .logo { font-family:"Noto Serif SC",serif; font-size:22px; font-weight:900; }
+  nav a { margin-left:20px; font-size:14px; color:var(--muted); text-decoration:none; }
+  nav a:hover { color:var(--accent); }
+  .hero { max-width:1200px; margin:24px auto 0; padding:0 24px; display:grid; grid-template-columns:1.4fr 1fr; gap:32px; }
+  .cover { border-radius:14px; aspect-ratio:16/9; background:linear-gradient(135deg,#1e3a5f,#3b82a0 55%,#7fb3c8); position:relative; overflow:hidden; }
+  .cover::after { content:"封面专题"; position:absolute; left:20px; bottom:16px; color:rgba(255,255,255,.9); font-size:13px; letter-spacing:.2em; }
+  .hero-text .kicker { color:var(--accent); font-size:13px; font-weight:700; letter-spacing:.15em; margin-bottom:14px; }
+  .hero-text h1 { font-family:"Noto Serif SC",serif; font-size:clamp(26px,3.6vw,38px); font-weight:900; line-height:1.35; margin-bottom:16px; }
+  .hero-text p { color:var(--muted); font-size:15px; line-height:1.9; margin-bottom:20px; }
+  .btn { display:inline-block; background:var(--fg); color:#fff; padding:12px 28px; border-radius:999px; font-size:14px; text-decoration:none; transition:background .2s; }
+  .btn:hover { background:var(--accent); }
+  .grid { max-width:1200px; margin:56px auto; padding:0 24px; display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .card { text-decoration:none; color:inherit; }
+  .thumb { border-radius:12px; aspect-ratio:4/3; margin-bottom:16px; }
+  .t1 { background:linear-gradient(135deg,#fdf0d5,#f4a261); }
+  .t2 { background:linear-gradient(135deg,#dbeafe,#93c5fd); }
+  .t3 { background:linear-gradient(135deg,#dcfce7,#86efac); }
+  .card .cat { font-size:12px; color:var(--accent); font-weight:700; letter-spacing:.1em; margin-bottom:8px; }
+  .card h3 { font-family:"Noto Serif SC",serif; font-size:18px; font-weight:900; line-height:1.5; margin-bottom:8px; }
+  .card p { font-size:13px; color:var(--muted); line-height:1.7; }
+  footer { border-top:1px solid var(--line); text-align:center; padding:28px; font-size:12px; color:#9ca3af; }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr;} .grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+  <div class="banner">风格预览 · 方案 C：杂志编辑风（非线上页面）</div>
+  <header>
+    <div class="logo">警校学习规划</div>
+    <nav><a href="#">首页</a><a href="#">大学规划</a><a href="#">编程</a><a href="#">公安联考</a><a href="#">关于</a></nav>
+  </header>
+  <div class="hero">
+    <div class="cover"></div>
+    <div class="hero-text">
+      <div class="kicker">本期专题 · SPECIAL</div>
+      <h1>网络安全与执法专业：四年规划全指南</h1>
+      <p>从大一到大四，专业课程、证书竞赛、联考节点逐一拆解。这是每个网安专业警校生都该读的第一篇文章。</p>
+      <a class="btn" href="#">阅读专题</a>
+    </div>
+  </div>
+  <div class="grid">
+    <a class="card" href="#"><div class="thumb t1"></div><div class="cat">公安联考</div><h3>公安联考四年规划指南</h3><p>行测、申论、公安专业科目的积累节奏，从入学第一天排起。</p></a>
+    <a class="card" href="#"><div class="thumb t2"></div><div class="cat">编程</div><h3>零编程基础·专属进阶蓝图</h3><p>零基础到高阶专业课之间，那座"桥"怎么搭。</p></a>
+    <a class="card" href="#"><div class="thumb t3"></div><div class="cat">大学规划</div><h3>公安联考冲刺计划</h3><p>最后 100 天，每一天该做什么的完整时间表。</p></a>
+  </div>
+  <footer>警校学习规划 · 方案 C 预览</footer>
+</body>
+</html>
