@@ -1,9 +1,6 @@
 const CONFIG = {
   NEXT_HOME_BANNER: true, // 首页是否显示大图及标语 [true,false]
   NEXT_HOME_BANNER_STRINGS: [
-    'Hi，我是一个程序员',
-    'Hi，我是一个打工人',
-    'Hi，我是一个干饭人',
     '欢迎来到我的博客🎉'
   ], // 首页大图标语文字
 
@@ -38,6 +35,7 @@ const CONFIG = {
 
   NEXT_COLOR_PRIMARY: '#4e80ee',
   NEXT_COLOR_BG: '#eeedee',
+  NEXT_STYLE_EDITORIAL: true, // 经典书院风视觉覆盖层,false 回退原版样式
 
   NEXT_ARTICLE_RELATE_POSTS: true, // 相关文章推荐
   NEXT_ARTICLE_COPYRIGHT: true, // 文章版权声明：true 全部显示；false 全部关闭；custom 仅填写 copyright 时显示
