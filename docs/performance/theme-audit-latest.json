@@ -1,0 +1,62 @@
+[
+  {
+    "theme": "heo",
+    "url": "http://localhost:3000/?theme=heo",
+    "scores": {
+      "performance": 33,
+      "seo": 100,
+      "accessibility": 100,
+      "bestPractices": 61
+    },
+    "metrics": {
+      "lcpMs": 10736,
+      "inpMs": null,
+      "cls": 0.00412195894476257,
+      "fcpMs": 2945,
+      "tbtMs": 6169,
+      "speedIndexMs": 7395,
+      "jsKb": 0,
+      "totalKb": 2028
+    }
+  },
+  {
+    "theme": "next",
+    "url": "http://localhost:3000/?theme=next",
+    "scores": {
+      "performance": 42,
+      "seo": 100,
+      "accessibility": 100,
+      "bestPractices": 61
+    },
+    "metrics": {
+      "lcpMs": 6060,
+      "inpMs": null,
+      "cls": 0.03798162742401488,
+      "fcpMs": 2353,
+      "tbtMs": 4740,
+      "speedIndexMs": 4792,
+      "jsKb": 0,
+      "totalKb": 2963
+    }
+  },
+  {
+    "theme": "starter",
+    "url": "http://localhost:3000/?theme=starter",
+    "scores": {
+      "performance": 26,
+      "seo": 92,
+      "accessibility": 90,
+      "bestPractices": 61
+    },
+    "metrics": {
+      "lcpMs": 8343,
+      "inpMs": null,
+      "cls": 0.113552922582674,
+      "fcpMs": 5063,
+      "tbtMs": 4356,
+      "speedIndexMs": 7349,
+      "jsKb": 0,
+      "totalKb": 3780
+    }
+  }
+]
