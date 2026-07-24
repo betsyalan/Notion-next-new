@@ -5,6 +5,7 @@
 | 文档 | 内容 |
 | --- | --- |
 | [全站功能与配置索引](./features.md) | 评论、统计、挂件、文章、Notion、性能、广告等 **全部配置项** |
+| [NOTION_CONFIG 与 blog.config.js 对照表](./notion-config-mapping.md) | 全部配置键逐一标注能否被 Notion 配置表覆盖 |
 | [Notion 数据与 4.x 能力](./notion-4x.md) | 数据库视图、字段、Menu、置顶、嵌入媒体等 |
 | [部署与环境](./../deploy/) | 各平台部署（见 deploy 目录） |
 
