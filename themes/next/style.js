@@ -8,8 +8,6 @@ import { themeConsoleStyle } from '@/lib/themeConsoleStyle'
  * 覆盖规则以 #theme-next 为作用域根(body 底色等少数全局规则除外),组件零改动。
  */
 const EDITORIAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap');
-
   /* ===== 设计令牌 ===== */
   #theme-next {
     --ink:#1a202c;
@@ -56,6 +54,10 @@ const EDITORIAL_CSS = `
   }
   #theme-next #top-nav .text-white { color: var(--navy); }
   #theme-next #top-nav .logo { letter-spacing: .12em; }
+  /* Logo 块透明化:复用 Logo 组件的硬编码 bg-black 黑块改为透出顶栏宣纸米,
+     文字色改灰;特异性(2 ID)低于上方顶栏条规则(3 ID),不影响顶栏条本身 */
+  #theme-next #top-nav .bg-black { background-color: transparent; }
+  #theme-next #top-nav .text-gray-300 { color: var(--gray); }
 
   /* ===== 左栏 Logo 块:黑底 → 宣纸渐变 + 青铜饰线 ===== */
   #theme-next #left .bg-black {
@@ -222,6 +224,7 @@ const EDITORIAL_CSS = `
   .dark #theme-next .text-gray-600 { color: #cfc7b8; }
   .dark #theme-next .text-gray-500 { color: var(--gray); }
   .dark #theme-next #posts-wrapper a.text-3xl .menu-link { color: var(--ink); }
+  .dark #theme-next #posts-wrapper a.text-3xl:hover .menu-link { color: var(--blue); }
   .dark #theme-next #posts-wrapper p { color: #b8b0a0; }
   .dark #theme-next #posts-wrapper a.bg-gray-800 { background-color: #e8e2d6; color: #1a202c; }
   .dark #theme-next #posts-wrapper a.bg-gray-800:hover { background-color: var(--blue); color: #141210; }
@@ -241,6 +244,8 @@ const EDITORIAL_CSS = `
  * 覆盖层用 dangerouslySetInnerHTML 输出:React 会把 <style> 文本子节点的 >
  * 转义为 &gt;,且 style 是 raw-text 元素不会反转义;EDITORIAL_CSS 为仓库内
  * 静态常量,无注入面。
+ * 书院风字体经并列 <link rel='stylesheet'> 异步加载,而非 CSS 内 @import:
+ * @import 会阻塞整个覆盖层样式表的渲染,字体加载失败时仍回退系统衬线。
  * @returns
  */
 const Style = () => {
@@ -273,7 +278,15 @@ const Style = () => {
 
       ${themeConsoleStyle('next', CONFIG)}
   `}</style>
-      {editorial && <style dangerouslySetInnerHTML={{ __html: EDITORIAL_CSS }} />}
+      {editorial && (
+        <>
+          <link
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap'
+          />
+          <style dangerouslySetInnerHTML={{ __html: EDITORIAL_CSS }} />
+        </>
+      )}
     </>
   )
 }

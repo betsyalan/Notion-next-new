@@ -72,5 +72,17 @@ describe('next 主题书院风覆盖层', () => {
     expect(html).toContain('--bg:#141210')
     expect(html).toContain('.dark body')
     expect(html).toContain('.dark\\:bg-hexo-black-gray')
+    // 暗色下文章列表标题 hover 变蓝
+    expect(html).toContain(
+      'a.text-3xl:hover .menu-link { color: var(--blue); }'
+    )
+  })
+
+  it('覆盖层 style 输出在原样式块之后', () => {
+    editorialFlag = true
+    const html = renderToStaticMarkup(<Style />)
+    expect(html.indexOf('#eeedee')).toBeLessThan(
+      html.indexOf('--bronze:#C08A3E')
+    )
   })
 })
