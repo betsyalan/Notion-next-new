@@ -16,7 +16,7 @@
 
 | 决策点 | 结论 |
 | --- | --- |
-| 落地方式 | 可配置开关 `NEXT_STYLE_EDITORIAL`,**默认 `true`**(开箱即书院风,可经环境变量 `NEXT_PUBLIC_NEXT_STYLE_EDITORIAL` 或 Notion 配置表关闭回退原版) |
+| 落地方式 | 可配置开关 `NEXT_STYLE_EDITORIAL`,**默认 `true`**(开箱即书院风;关闭通道:Notion 配置表同名键置 false,或改 themes/next/config.js 默认值。注:主题级 NEXT_* 键在本仓库 siteConfig 机制下无环境变量管道,与全仓库惯例一致) |
 | 实现机制 | 方案一:纯 CSS 覆盖层,组件 JS 零改动 |
 | 暗色模式 | 为书院风配套设计暗色令牌(预览稿仅有浅色) |
 | 标题字体 | 加载 Google Fonts `Noto Serif SC`(衬线标题),正文维持无衬线 |
