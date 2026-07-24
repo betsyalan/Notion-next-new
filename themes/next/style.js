@@ -157,7 +157,7 @@ const EDITORIAL_CSS = `
 
   /* ===== 归档 ===== */
   #theme-next li.hover\\:border-gray-500:hover { border-left-color: var(--bronze); }
-  #theme-next a.hover\\:underline:hover { color: var(--blue); }
+  #theme-next a.hover\\:underline:hover:not(.bg-gray-800) { color: var(--blue); }
 
   /* ===== 分类/标签索引 hover ===== */
   #theme-next .hover\\:bg-gray-100:hover { background-color: var(--paper); }
