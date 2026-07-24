@@ -179,6 +179,56 @@ const EDITORIAL_CSS = `
     color: var(--ink);
     font-size: 14px;
   }
+
+  /* ===== 暗色令牌映射 ===== */
+  .dark #theme-next {
+    --ink:#e8e2d6;
+    --blue:#7aa2f0;
+    --navy:#c9b98f;
+    --paper:#1d1a16;
+    --gray:#9a917f;
+    --line:#332e26;
+    --bg:#141210;
+  }
+  .dark body { background-color: #141210; }
+
+  /* ===== 暗色卡片面 ===== */
+  .dark #theme-next .dark\\:bg-hexo-black-gray {
+    background-color: #1d1a16;
+    border-color: var(--line);
+  }
+  .dark #theme-next .dark\\:bg-gray-800 { background-color: #26211b; }
+  .dark #theme-next .dark\\:bg-gray-700 { background-color: #26211b; }
+  .dark #theme-next #left div.bg-gray-100 {
+    background-color: #26211b;
+    border-color: var(--line);
+  }
+  .dark #theme-next #left input.bg-gray-100 { color: var(--ink); }
+
+  /* ===== 暗色 Logo 块与顶栏 ===== */
+  .dark #theme-next #left .bg-black {
+    background: linear-gradient(165deg,#26211b 0%,#1d1a16 60%,#191512 100%);
+    border-bottom-color: var(--bronze);
+  }
+  .dark #theme-next #left .logo { color: var(--navy); }
+  .dark #theme-next #top-nav #sticky-nav > div.bg-black {
+    background-color: #1d1a16;
+    border-bottom-color: var(--bronze);
+  }
+  .dark #theme-next #top-nav .text-white { color: var(--navy); }
+
+  /* ===== 暗色文字与文章卡 ===== */
+  .dark #theme-next .text-gray-700,
+  .dark #theme-next .text-gray-600 { color: #cfc7b8; }
+  .dark #theme-next .text-gray-500 { color: var(--gray); }
+  .dark #theme-next #posts-wrapper a.text-3xl .menu-link { color: var(--ink); }
+  .dark #theme-next #posts-wrapper p { color: #b8b0a0; }
+  .dark #theme-next #posts-wrapper a.bg-gray-800 { background-color: #e8e2d6; color: #1a202c; }
+  .dark #theme-next #posts-wrapper a.bg-gray-800:hover { background-color: var(--blue); color: #141210; }
+  .dark #theme-next ul.bg-gray-100 { background-color: #26211b; }
+  .dark #theme-next #right #tags-group a { color: var(--gray); }
+  .dark #theme-next footer { background-color: #1d1a16; color: var(--gray); }
+  .dark #theme-next footer h1 { color: var(--ink); }
 `
 
 /**

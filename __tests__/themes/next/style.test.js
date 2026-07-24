@@ -64,4 +64,13 @@ describe('next 主题书院风覆盖层', () => {
     expect(html).toContain('#theme-next footer h1')
     expect(html).toContain('hover\\:border-gray-500')
   })
+
+  it('开启时包含暗色令牌与暗色覆盖', () => {
+    editorialFlag = true
+    const html = renderToStaticMarkup(<Style />)
+    expect(html).toContain('.dark #theme-next')
+    expect(html).toContain('--bg:#141210')
+    expect(html).toContain('.dark body')
+    expect(html).toContain('.dark\\:bg-hexo-black-gray')
+  })
 })
