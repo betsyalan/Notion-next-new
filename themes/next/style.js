@@ -18,7 +18,7 @@ const EDITORIAL_CSS = `
     --gray:#6b7280;
     --line:#e8e6e1;
     --bg:#fbfaf8;
-    --serif:"Noto Serif SC","Songti SC","STSong",serif;
+    --serif:"Songti SC","STSong","SimSun",serif;
   }
 
   /* 页面底色 */
@@ -47,21 +47,21 @@ const EDITORIAL_CSS = `
     box-shadow: 0 6px 18px rgba(26,32,44,.10);
   }
 
-  /* ===== 移动端顶栏:黑底 → 宣纸米 + 青铜底线 ===== */
+  /* ===== 移动端顶栏:黑底 → 与主页一致的底色(--bg) + 青铜底线 ===== */
   #theme-next #top-nav #sticky-nav > div.bg-black {
-    background-color: var(--paper);
+    background-color: var(--bg);
     border-bottom: 2px solid var(--bronze);
   }
   #theme-next #top-nav .text-white { color: var(--navy); }
   #theme-next #top-nav .logo { letter-spacing: .12em; }
-  /* Logo 块透明化:复用 Logo 组件的硬编码 bg-black 黑块改为透出顶栏宣纸米,
+  /* Logo 块透明化:复用 Logo 组件的硬编码 bg-black 黑块改为透出顶栏底色,
      文字色改灰;特异性(2 ID)低于上方顶栏条规则(3 ID),不影响顶栏条本身 */
   #theme-next #top-nav .bg-black { background-color: transparent; }
   #theme-next #top-nav .text-gray-300 { color: var(--gray); }
 
-  /* ===== 左栏 Logo 块:黑底 → 宣纸渐变 + 青铜饰线 ===== */
+  /* ===== 左栏 Logo 块:黑底 → 与主页一致的底色(--bg) + 青铜饰线 ===== */
   #theme-next #left .bg-black {
-    background: linear-gradient(165deg,#fbf7ee 0%,var(--paper) 60%,#f1e8d6 100%);
+    background: var(--bg);
     border-bottom: 3px solid var(--bronze);
   }
   #theme-next #left .logo {
@@ -99,9 +99,11 @@ const EDITORIAL_CSS = `
   }
 
   /* ===== 文章卡 ===== */
+  /* 文章卡标题:预览为衬线粗体(700),根节点 font-light 会继承成 300,需显式覆盖 */
   #theme-next #posts-wrapper a.text-3xl {
     font-size: 26px;
     line-height: 1.4;
+    font-weight: 700;
   }
   #theme-next #posts-wrapper a.text-3xl .menu-link { color: #374151; }
   #theme-next #posts-wrapper a.text-3xl:hover .menu-link { color: var(--blue); }
@@ -132,17 +134,12 @@ const EDITORIAL_CSS = `
   }
   #theme-next aside .bg-gray-600 { background-color: var(--blue); }
 
-  /* ===== 右栏标签云:灰字 hover 蓝 ===== */
+  /* ===== 右栏标签云:Notion 选项色徽章 =====
+     底色(notion-*_background)与文字色(notion-*)由组件按 Notion 选项色输出,
+     此处仅去掉默认阴影;hover 蓝底白字由通用 hover 规则与组件 group-hover 处理 */
   #theme-next #right #tags-group a {
-    background-color: transparent;
     box-shadow: none;
-    color: #9ca3af;
   }
-  #theme-next #right #tags-group a:hover {
-    background-color: transparent;
-    color: var(--blue);
-  }
-  #theme-next #right #tags-group a:hover div { color: var(--blue); }
 
   /* ===== InfoCard 作者名 ===== */
   #theme-next #left .text-2xl { font-family: var(--serif); }
@@ -194,6 +191,32 @@ const EDITORIAL_CSS = `
   }
   .dark body { background-color: #141210; }
 
+  /* ===== 暗色 Notion 选项色调色板(取自 react-notion-x 暗色主题) =====
+     标签/分类徽章的底色与文字色在暗色下仍按选项色呈现;
+     同时改善文章正文中彩色文字/背景的暗色对比度 */
+  .dark #theme-next {
+    --notion-red: rgb(255,115,105);
+    --notion-pink: rgb(226,85,161);
+    --notion-blue: rgb(82,156,202);
+    --notion-purple: rgb(154,109,215);
+    --notion-teal: rgb(77,171,154);
+    --notion-yellow: rgb(255,220,73);
+    --notion-orange: rgb(255,163,68);
+    --notion-brown: rgb(147,114,100);
+    --notion-gray: rgba(151,154,155,.95);
+    --notion-red_background: rgb(89,65,65);
+    --notion-pink_background: rgb(83,59,76);
+    --notion-blue_background: rgb(54,73,84);
+    --notion-purple_background: rgb(68,63,87);
+    --notion-teal_background: rgb(53,76,75);
+    --notion-yellow_background: rgb(89,86,59);
+    --notion-orange_background: rgb(89,74,58);
+    --notion-brown_background: rgb(67,64,64);
+    --notion-gray_background: rgb(69,75,78);
+    --notion-green_background: rgb(53,76,75);
+    --notion-default_background: rgb(64,68,70);
+  }
+
   /* ===== 暗色卡片面 ===== */
   .dark #theme-next .dark\\:bg-hexo-black-gray {
     background-color: #1d1a16;
@@ -207,14 +230,14 @@ const EDITORIAL_CSS = `
   }
   .dark #theme-next #left input.bg-gray-100 { color: var(--ink); }
 
-  /* ===== 暗色 Logo 块与顶栏 ===== */
+  /* ===== 暗色 Logo 块与顶栏:与暗色页面底色(--bg)一致 ===== */
   .dark #theme-next #left .bg-black {
-    background: linear-gradient(165deg,#26211b 0%,#1d1a16 60%,#191512 100%);
+    background: var(--bg);
     border-bottom-color: var(--bronze);
   }
   .dark #theme-next #left .logo { color: var(--navy); }
   .dark #theme-next #top-nav #sticky-nav > div.bg-black {
-    background-color: #1d1a16;
+    background-color: var(--bg);
     border-bottom-color: var(--bronze);
   }
   .dark #theme-next #top-nav .text-white { color: var(--navy); }
@@ -229,7 +252,6 @@ const EDITORIAL_CSS = `
   .dark #theme-next #posts-wrapper a.bg-gray-800 { background-color: #e8e2d6; color: #1a202c; }
   .dark #theme-next #posts-wrapper a.bg-gray-800:hover { background-color: var(--blue); color: #141210; }
   .dark #theme-next ul.bg-gray-100 { background-color: #26211b; }
-  .dark #theme-next #right #tags-group a { color: var(--gray); }
   .dark #theme-next footer { background-color: #1d1a16; color: var(--gray); }
   .dark #theme-next footer h1 { color: var(--ink); }
 `
@@ -244,8 +266,9 @@ const EDITORIAL_CSS = `
  * 覆盖层用 dangerouslySetInnerHTML 输出:React 会把 <style> 文本子节点的 >
  * 转义为 &gt;,且 style 是 raw-text 元素不会反转义;EDITORIAL_CSS 为仓库内
  * 静态常量,无注入面。
- * 书院风字体经并列 <link rel='stylesheet'> 异步加载,而非 CSS 内 @import:
- * @import 会阻塞整个覆盖层样式表的渲染,字体加载失败时仍回退系统衬线。
+ * 书院风标题使用系统衬线栈(--serif: Songti SC/STSong/SimSun/serif),
+ * 刻意不加载任何网络字体:中文 webfont 切片多、单字重全量可达 14MB+,
+ * 且 Google Fonts 在国内不稳定会阻塞首屏渲染。
  * @returns
  */
 const Style = () => {
@@ -254,7 +277,7 @@ const Style = () => {
   return (
     <>
       <style>{`
-      // 底色
+      /* 底色 */
       body {
         background-color: #eeedee;
       }
@@ -262,7 +285,7 @@ const Style = () => {
         background-color: black;
       }
 
-      // 菜单下划线动画
+      /* 菜单下划线动画 */
       #theme-next .menu-link {
         text-decoration: none;
         background-image: linear-gradient(#4e80ee, #4e80ee);
@@ -278,15 +301,7 @@ const Style = () => {
 
       ${themeConsoleStyle('next', CONFIG)}
   `}</style>
-      {editorial && (
-        <>
-          <link
-            rel='stylesheet'
-            href='https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&display=swap'
-          />
-          <style dangerouslySetInnerHTML={{ __html: EDITORIAL_CSS }} />
-        </>
-      )}
+      {editorial && <style dangerouslySetInnerHTML={{ __html: EDITORIAL_CSS }} />}
     </>
   )
 }
