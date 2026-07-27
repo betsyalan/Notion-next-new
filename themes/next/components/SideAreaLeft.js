@@ -2,6 +2,7 @@ import Live2D from '@/components/Live2D'
 import Tabs from '@/components/Tabs'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
+import { useRouter } from 'next/router'
 import CONFIG from '../config'
 import Card from './Card'
 import InfoCard from './InfoCard'
@@ -23,10 +24,14 @@ import NavPostTree from './NavPostTree'
 const SideAreaLeft = props => {
   const { post, slot, postCount } = props
   const { locale } = useGlobal()
+  const router = useRouter()
   const showToc = post && post.toc && post.toc.length > 1
   const showPostTree = siteConfig('NEXT_LEFT_POST_TREE', true, CONFIG)
   // 默认页签：文章页默认「目录」，其他页默认「文章树」
   const defaultTabIndex = showToc && showPostTree ? 1 : 0
+  // key 绑定路由：任何页面跳转（含文章↔文章）都重置回默认页签，
+  // 否则 Tabs 内部 state 会残留上一个页面的手动选择
+  const tabsKey = (router.asPath || '/').split('?')[0]
   return (
     <aside
       id='left'
@@ -51,7 +56,7 @@ const SideAreaLeft = props => {
 
       <div className='sticky top-4 hidden lg:block'>
         <Card>
-          <Tabs defaultIndex={defaultTabIndex}>
+          <Tabs key={tabsKey} defaultIndex={defaultTabIndex}>
             {showPostTree && (
               <div
                 key='文章树'

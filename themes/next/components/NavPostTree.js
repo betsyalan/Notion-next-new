@@ -15,7 +15,11 @@ const NavPostTree = ({ allNavPages, onHeightChange, className = '' }) => {
   const folders = groupArticles(allNavPages)
 
   // 存放被展开的分组索引（手风琴：一次只展开一个）
-  const [expandedGroups, setExpandedGroups] = useState([])
+  // 惰性初始化：首帧即展开当前文章所在分组（未命中回退第一个分类），
+  // 避免 SSR 全折叠、客户端再展开造成的闪烁
+  const [expandedGroups, setExpandedGroups] = useState(() => [
+    getDefaultOpenIndexByPath(folders, currentPath)
+  ])
 
   // 路由变化时自动展开当前文章所在分组
   useEffect(() => {
