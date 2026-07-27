@@ -24,6 +24,9 @@ const SideAreaLeft = props => {
   const { post, slot, postCount } = props
   const { locale } = useGlobal()
   const showToc = post && post.toc && post.toc.length > 1
+  const showPostTree = siteConfig('NEXT_LEFT_POST_TREE', true, CONFIG)
+  // 默认页签：文章页默认「目录」，其他页默认「文章树」
+  const defaultTabIndex = showToc && showPostTree ? 1 : 0
   return (
     <aside
       id='left'
@@ -48,7 +51,15 @@ const SideAreaLeft = props => {
 
       <div className='sticky top-4 hidden lg:block'>
         <Card>
-          <Tabs>
+          <Tabs defaultIndex={defaultTabIndex}>
+            {showPostTree && (
+              <div
+                key='文章树'
+                className='dark:text-gray-400 text-gray-600 bg-white dark:bg-hexo-black-gray duration-200'>
+                <NavPostTree allNavPages={props.allNavPages} />
+              </div>
+            )}
+
             {showToc && (
               <div
                 key={locale.COMMON.TABLE_OF_CONTENTS}
@@ -79,12 +90,6 @@ const SideAreaLeft = props => {
             </div>
           </Tabs>
         </Card>
-
-        {siteConfig('NEXT_LEFT_POST_TREE', true, CONFIG) && (
-          <Card className='mt-5'>
-            <NavPostTree allNavPages={props.allNavPages} />
-          </Card>
-        )}
 
         <div className='flex justify-center'>
           {slot}

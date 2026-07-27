@@ -1,4 +1,5 @@
 import Collapse from '@/components/Collapse'
+import NotionIcon from '@/components/NotionIcon'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -45,7 +46,11 @@ const NavPostTree = ({ allNavPages, onHeightChange, className = '' }) => {
           indent ? 'pl-3' : 'px-2'
         } ${currentPath === post.href ? 'font-bold text-red-400' : ''}`}
       >
-        {post.pageIcon && <span className='mr-1'>{post.pageIcon}</span>}
+        {/* pageIcon 可能是 emoji 也可能是图片 URL，交给 NotionIcon 渲染；
+            包装 span 把图片图标约束到文字尺寸 */}
+        <span className='[&_img]:w-4 [&_img]:h-4'>
+          <NotionIcon icon={post.pageIcon} />
+        </span>
         {post.title}
       </SmartLink>
     )

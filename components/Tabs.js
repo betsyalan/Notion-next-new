@@ -6,8 +6,8 @@ import { siteConfig } from '@/lib/config'
  * @param {*} param0
  * @returns
  */
-const Tabs = ({ className, children }) => {
-  const [currentTab, setCurrentTab] = useState(0);
+const Tabs = ({ className, children, defaultIndex = 0 }) => {
+  const [currentTab, setCurrentTab] = useState(defaultIndex);
 
   const validChildren = children.filter(c => c);
 

@@ -80,4 +80,20 @@ describe('NavPostTree 组件', () => {
     const { container } = render(<NavPostTree allNavPages={[]} />)
     expect(container.firstChild).toBeNull()
   })
+
+  it('pageIcon 为图片 URL 时渲染图片而不是 URL 文本', () => {
+    const posts = [
+      {
+        id: '9',
+        title: '带图标文章',
+        href: '/post-9',
+        category: '前端',
+        pageIcon: 'https://www.notion.so/icons/broccoli_lightgray.svg?t=abc123'
+      }
+    ]
+    const { container } = render(<NavPostTree allNavPages={posts} />)
+    expect(container.querySelector('img')).toBeInTheDocument()
+    expect(screen.queryByText(/notion\.so\/icons/)).not.toBeInTheDocument()
+    expect(screen.getByText('带图标文章')).toBeInTheDocument()
+  })
 })
