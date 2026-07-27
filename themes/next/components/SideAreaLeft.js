@@ -9,6 +9,7 @@ import Logo from './Logo'
 import { MenuList } from './MenuList'
 import SearchInput from './SearchInput'
 import Toc from './Toc'
+import NavPostTree from './NavPostTree'
 
 /**
  * 侧边平铺
@@ -78,6 +79,12 @@ const SideAreaLeft = props => {
             </div>
           </Tabs>
         </Card>
+
+        {siteConfig('NEXT_LEFT_POST_TREE', true, CONFIG) && (
+          <Card className='mt-5'>
+            <NavPostTree allNavPages={props.allNavPages} />
+          </Card>
+        )}
 
         <div className='flex justify-center'>
           {slot}

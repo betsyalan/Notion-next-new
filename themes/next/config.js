@@ -28,6 +28,9 @@ const CONFIG = {
   NEXT_MENU_ARCHIVE: true, // 显示归档
   NEXT_MENU_SEARCH: true, // 显示搜索
 
+  // 左侧栏
+  NEXT_LEFT_POST_TREE: true, // 左侧栏文章树（分类→文章两层，桌面端独立卡片+移动端汉堡菜单）
+
   NEXT_WIDGET_TO_TOP: true, // 是否显示回顶
   NEXT_WIDGET_TO_BOTTOM: false, // 显示回底
   NEXT_WIDGET_DARK_MODE: false, // 显示日间/夜间模式切换
