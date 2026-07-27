@@ -5,11 +5,17 @@ import { siteConfig } from '@/lib/config'
 
 const InfoCard = (props) => {
   const { siteInfo } = props
+  // 站点图标可能是 notion://custom_emoji 私有协议（手动上传的自定义表情），
+  // 浏览器无法加载，此时跳过头像避免破图
+  const icon = siteInfo?.icon || ''
+  const showAvatar = icon.startsWith('http') || icon.startsWith('data:')
   return <>
     <div className='flex flex-col items-center justify-center '>
+        {showAvatar && (
         <div className='hover:rotate-45 hover:scale-125 transform duration-200 cursor-pointer' onClick={ () => { Router.push('/') }}>
-        <LazyImage src={siteInfo?.icon} className='rounded-full' width={120} height={120} alt={siteConfig('AUTHOR')}/>
+        <LazyImage src={icon} className='rounded-full' width={120} height={120} alt={siteConfig('AUTHOR')}/>
         </div>
+        )}
         <div className='text-2xl font-serif dark:text-white py-2 hover:scale-105 transform duration-200'>{siteConfig('AUTHOR')}</div>
         <div className='font-light dark:text-white py-2 hover:scale-105 transform duration-200 text-center'>{siteConfig('BIO')}</div>
         <SocialButton/>

@@ -331,6 +331,12 @@ const getAbsoluteImageUrl = (image, siteUrl) => {
     return rawImage
   }
 
+  // notion:// 等私有协议（手动上传的自定义表情）无法访问，
+  // 不能按相对路径拼站点地址，直接放弃该图
+  if (rawImage.includes('://')) {
+    return ''
+  }
+
   return createSiteUrl(siteUrl, rawImage) || rawImage
 }
 
