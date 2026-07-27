@@ -5,6 +5,7 @@ import CategoryGroup from './CategoryGroup'
 import Collapse from '@/components/Collapse'
 import Logo from './Logo'
 import { MenuList } from './MenuList'
+import NavPostTree from './NavPostTree'
 import SearchDrawer from './SearchDrawer'
 import TagGroups from './TagGroups'
 import CONFIG from '../config'
@@ -158,6 +159,14 @@ const TopNav = (props) => {
 
                 <Collapse collapseRef={collapseRef} type='vertical' isOpen={isOpen}>
                     <MenuList onHeightChange={(param) => collapseRef.current?.updateCollapseHeight(param)} {...props} from='top' />
+                    {siteConfig('NEXT_LEFT_POST_TREE', true, CONFIG) && (
+                        <div className='px-4 pb-4 bg-white dark:bg-gray-800'>
+                            <NavPostTree
+                                allNavPages={props.allNavPages}
+                                onHeightChange={(param) => collapseRef.current?.updateCollapseHeight(param)}
+                            />
+                        </div>
+                    )}
                 </Collapse>
             </div>
 
