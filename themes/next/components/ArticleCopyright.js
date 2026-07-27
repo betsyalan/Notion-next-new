@@ -18,7 +18,7 @@ export default function ArticleCopyright({ author, url, post }) {
   }
   return (
     <section className='dark:text-gray-300 mt-6'>
-      <ul className='overflow-x-auto whitespace-nowrap text-sm dark:bg-gray-700 bg-gray-100 p-5 leading-8 border-l-2 border-blue-500'>
+      <ul className='overflow-x-auto whitespace-nowrap text-sm p-5 leading-8 border-l-2 border-blue-500'>
         <li>
           <strong className='mr-2'>{locale.COMMON.AUTHOR}:</strong>
           <SmartLink href={'/about'} className='hover:underline'>

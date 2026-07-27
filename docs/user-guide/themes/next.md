@@ -69,7 +69,7 @@ NEXT_COLOR_BG: '#eeedee'
 | `NEXT_MENU_TAG` | 见 config.js |
 | `NEXT_MENU_ARCHIVE` | 见 config.js |
 | `NEXT_MENU_SEARCH` | 见 config.js |
-| `NEXT_LEFT_POST_TREE` | 左侧栏文章树（分类→文章两层，桌面端为左侧 Tabs 的第一个页签：文章页默认显示「目录」、其他页默认显示「文章树」；移动端在汉堡菜单内），默认 `true` |
+| `NEXT_LEFT_POST_TREE` | 左侧栏文章导航树（分类→文章两层，桌面端为左侧 Tabs 的第一个页签「文章导航」：文章页默认显示「目录」、其他页默认显示「文章导航」；移动端在汉堡菜单内），默认 `true` |
 | `NEXT_WIDGET_TO_TOP` | 见 config.js |
 | `NEXT_WIDGET_TO_BOTTOM` | 见 config.js |
 | `NEXT_WIDGET_DARK_MODE` | 见 config.js |

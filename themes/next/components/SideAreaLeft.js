@@ -59,7 +59,7 @@ const SideAreaLeft = props => {
           <Tabs key={tabsKey} defaultIndex={defaultTabIndex}>
             {showPostTree && (
               <div
-                key='文章树'
+                key='文章导航'
                 className='dark:text-gray-400 text-gray-600 bg-white dark:bg-hexo-black-gray duration-200'>
                 <NavPostTree allNavPages={props.allNavPages} />
               </div>
