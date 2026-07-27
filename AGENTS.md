@@ -156,7 +156,7 @@ NotionNext/
 
 ## 代码风格
 
-- **Prettier**（`.prettierrc`）：单引号、**不加分号**、无尾逗号、`arrowParens: avoid`、行宽 80、JSX 单引号、`jsxBracketSameLine: true`。
+- **Prettier**（`.prettierrc.json`）：单引号、**不加分号**、无尾逗号、`arrowParens: avoid`、行宽 80、JSX 单引号、`jsxBracketSameLine: true`。
 - **ESLint**（`.eslintrc.js`）：`next` + `react` + `@typescript-eslint` 推荐规则 + `prettier`；`react-hooks/rules-of-hooks` 为 error；对 `*.js` 文件放宽了 TS 严格规则（`no-unsafe-*`、`no-explicit-any` 等关闭）。
 - **TypeScript**：`strict: true`、`noUncheckedIndexedAccess`、`exactOptionalPropertyTypes`；新代码注意这些严格项。
 - 命名规范（`DEVELOPMENT.md`）：组件 PascalCase、文件 kebab-case、变量/函数 camelCase、常量 UPPER_SNAKE_CASE。
