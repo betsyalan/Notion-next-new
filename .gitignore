@@ -63,3 +63,4 @@ package-lock.json
 tsconfig.tsbuildinfo
 webpack-internal:/
 .worktrees/
+logs/
