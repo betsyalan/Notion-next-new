@@ -1,6 +1,7 @@
 import fs from 'fs'
 
 interface QueueItem<T> {
+  key: string
   requestFunc: () => Promise<T>
   resolve: (value: T) => void
   reject: (err: unknown) => void
@@ -12,8 +13,8 @@ interface NodeError extends Error {
 
 export class RateLimiter {
   private queue: QueueItem<unknown>[] = []
-  private inflight = new Set<string>()
-  private isProcessing = false
+  private pending = new Map<string, Promise<unknown>>()
+  private activeCount = 0
   private lastRequestTime = 0
   private requestCount = 0
   private windowStart = Date.now()
@@ -21,7 +22,8 @@ export class RateLimiter {
   constructor(
     private maxRequestsPerMinute = 200,
     private lockFilePath?: string,
-    private minIntervalMs = 300
+    private minIntervalMs = 300,
+    private concurrency = 1
   ) { }
 
   private async acquireLock() {
@@ -57,41 +59,46 @@ export class RateLimiter {
     catch (err) { console.error('释放锁失败', err) }
   }
 
+  /**
+   * 入队。同一 key 的在途/排队请求共享同一个 Promise(请求级去重);
+   * 队列按 concurrency 个并发槽消费,受每分钟上限与最小间隔约束。
+   */
   public enqueue<T>(key: string, requestFunc: () => Promise<T>): Promise<T> {
-    if (this.inflight.has(key)) {
-      return new Promise<T>((resolve, reject) => {
-        const interval = setInterval(() => {
-          if (!this.inflight.has(key)) {
-            clearInterval(interval)
-            // 用 void 显式标记忽略：递归 enqueue 自身已串接 resolve/reject
-            void this.enqueue(key, requestFunc).then(resolve).catch(reject)
-          }
-        }, 50)
-      })
-    }
+    const existing = this.pending.get(key)
+    if (existing) return existing as Promise<T>
 
-    return new Promise<T>((resolve, reject) => {
+    const promise = new Promise<T>((resolve, reject) => {
       this.queue.push({
+        key,
         requestFunc: requestFunc as () => Promise<unknown>,
         resolve: resolve as (value: unknown) => void,
         reject
       })
-      if (!this.isProcessing) {
-        // processQueue 是 async 但这里不 await，需要兜底捕获
-        void this.processQueue()
-      }
-    })
+    }).finally(() => this.pending.delete(key))
+
+    this.pending.set(key, promise)
+    this.pump()
+    return promise
   }
 
-  private async processQueue() {
-    if (this.queue.length === 0) { this.isProcessing = false; return }
-    this.isProcessing = true
+  /** 启动空闲的并发槽;槽位不足或队列为空时直接返回 */
+  private pump() {
+    while (this.queue.length > 0 && this.activeCount < this.concurrency) {
+      this.activeCount++
+      void this.processOne().finally(() => {
+        this.activeCount--
+        this.pump()
+      })
+    }
+  }
 
+  private async processOne() {
     try {
       await this.acquireLock()
+
+      // 每分钟窗口上限
       const now = Date.now()
       const elapsed = now - this.windowStart
-
       if (elapsed > 60_000) { this.requestCount = 0; this.windowStart = now }
       if (this.requestCount >= this.maxRequestsPerMinute) {
         const waitTime = 60_000 - elapsed + 100
@@ -100,32 +107,28 @@ export class RateLimiter {
         this.windowStart = Date.now()
       }
 
-      const waitTime = Math.max(
+      // 相邻请求最小间隔(按发起时间计,保证并发下也有节奏)
+      const waitMs = Math.max(
         0,
-        this.minIntervalMs - (now - this.lastRequestTime)
+        this.minIntervalMs - (Date.now() - this.lastRequestTime)
       )
-      if (waitTime > 0) await new Promise(res => setTimeout(res, waitTime))
+      if (waitMs > 0) await new Promise(res => setTimeout(res, waitMs))
 
-      const { requestFunc, resolve, reject } = this.queue.shift()!
-      const key = crypto.randomUUID()
-      this.inflight.add(key)
+      const item = this.queue.shift()
+      if (!item) return
 
+      this.lastRequestTime = Date.now()
       try {
-        const result: unknown = await requestFunc()
-        this.lastRequestTime = Date.now()
+        const result: unknown = await item.requestFunc()
         this.requestCount++
-        resolve(result)
-      } catch (err) { reject(err) }
-      finally { this.inflight.delete(key) }
-
+        item.resolve(result)
+      } catch (err) {
+        item.reject(err)
+      }
     } catch (err) {
       console.error('限流队列异常', err)
     } finally {
       this.releaseLock()
-      // 显式忽略下一轮的返回 Promise
-      setTimeout(() => {
-        void this.processQueue()
-      }, 0)
     }
   }
 }

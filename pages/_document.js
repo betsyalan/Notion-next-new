@@ -55,6 +55,9 @@ class MyDocument extends Document {
             <>
               {isLocalFontAwesome && (
                 <>
+                  {/* 只 preload 最常用的 solid 字体;
+                      regular/brands 绝大多数页面用不到,
+                      由 @font-face 按需下载,避免抢占 LCP 带宽 */}
                   <link
                     rel='preload'
                     href='/vendor/fontawesome/webfonts/fa-solid-900.woff2'
@@ -63,14 +66,14 @@ class MyDocument extends Document {
                     crossOrigin='anonymous'
                   />
                   <link
-                    rel='preload'
+                    rel='prefetch'
                     href='/vendor/fontawesome/webfonts/fa-regular-400.woff2'
                     as='font'
                     type='font/woff2'
                     crossOrigin='anonymous'
                   />
                   <link
-                    rel='preload'
+                    rel='prefetch'
                     href='/vendor/fontawesome/webfonts/fa-brands-400.woff2'
                     as='font'
                     type='font/woff2'
