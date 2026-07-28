@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { siteConfig } from '@/lib/config'
+import { useCallback, useEffect, useState } from 'react'
 
 // 过滤 <a> 标签不能识别的 props
 const filterDOMProps = props => {
@@ -49,7 +50,7 @@ const SmartLink = ({ href, children, ...rest }) => {
 
   const isExternal = urlString.startsWith('http') && !urlString.startsWith(LINK)
 
-  const getPersistedQuery = () => {
+  const getPersistedQuery = useCallback(() => {
     if (typeof window === 'undefined') return {}
     const queryString = window.location.search?.slice(1) || ''
     const params = new URLSearchParams(queryString)
@@ -58,37 +59,58 @@ const SmartLink = ({ href, children, ...rest }) => {
       if (value !== '') preserved[key] = value
     }
     return preserved
-  }
+  }, [])
 
-  const mergePreservedQueryForStringHref = value => {
-    if (typeof value !== 'string' || !value || value.startsWith('#')) return value
-    const preservedQuery = getPersistedQuery()
-    if (Object.keys(preservedQuery).length === 0) return value
-
-    const isAbsolute = value.startsWith('http://') || value.startsWith('https://')
-    const url = new URL(value, LINK)
-    Object.entries(preservedQuery).forEach(([key, paramValue]) => {
-      if (!url.searchParams.has(key)) {
-        url.searchParams.set(key, paramValue)
+  const mergePreservedQueryForStringHref = useCallback(
+    value => {
+      if (typeof value !== 'string' || !value || value.startsWith('#')) {
+        return value
       }
-    })
+      const preservedQuery = getPersistedQuery()
+      if (Object.keys(preservedQuery).length === 0) return value
 
-    if (isAbsolute) return url.toString()
-    return `${url.pathname}${url.search}${url.hash}`
-  }
+      const isAbsolute =
+        value.startsWith('http://') || value.startsWith('https://')
+      const url = new URL(value, LINK)
+      Object.entries(preservedQuery).forEach(([key, paramValue]) => {
+        if (!url.searchParams.has(key)) {
+          url.searchParams.set(key, paramValue)
+        }
+      })
 
-  const mergePreservedQueryForObjectHref = value => {
-    if (!value || typeof value !== 'object') return value
-    const preservedQuery = getPersistedQuery()
-    if (Object.keys(preservedQuery).length === 0) return value
-    return {
-      ...value,
-      query: {
-        ...preservedQuery,
-        ...(value.query || {})
+      if (isAbsolute) return url.toString()
+      return `${url.pathname}${url.search}${url.hash}`
+    },
+    [LINK, getPersistedQuery]
+  )
+
+  const mergePreservedQueryForObjectHref = useCallback(
+    value => {
+      if (!value || typeof value !== 'object') return value
+      const preservedQuery = getPersistedQuery()
+      if (Object.keys(preservedQuery).length === 0) return value
+      return {
+        ...value,
+        query: {
+          ...preservedQuery,
+          ...(value.query || {})
+        }
       }
-    }
-  }
+    },
+    [getPersistedQuery]
+  )
+
+  // 合并当前 URL 的 query 只能在客户端进行:
+  // 首渲染(SSR 与客户端 hydrate)保持原 href,挂载后再合并,
+  // 否则服务端与客户端 HTML 不一致导致 hydration 不匹配
+  const [mergedHref, setMergedHref] = useState(href)
+  useEffect(() => {
+    setMergedHref(
+      typeof href === 'string'
+        ? mergePreservedQueryForStringHref(href)
+        : mergePreservedQueryForObjectHref(href)
+    )
+  }, [href, mergePreservedQueryForStringHref, mergePreservedQueryForObjectHref])
 
   if (isExternal) {
     // 对于外部链接，必须是 string 类型
@@ -106,12 +128,7 @@ const SmartLink = ({ href, children, ...rest }) => {
     )
   }
 
-  // 内部链接（可为对象形式）
-  const mergedHref =
-    typeof href === 'string'
-      ? mergePreservedQueryForStringHref(href)
-      : mergePreservedQueryForObjectHref(href)
-
+  // 内部链接（可为对象形式）;mergedHref 首渲染等于原 href,挂载后合并 query
   return (
     <Link href={mergedHref} {...filterLinkProps(rest)}>
       {children}

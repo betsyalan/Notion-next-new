@@ -27,6 +27,8 @@ export async function getStaticProps({ params: { keyword }, locale }) {
   )
   props.posts = await filterByMemCache(allPosts, keyword)
   props.postCount = props.posts.length
+  // allPages 体量大且已用不到,避免随 props 重复序列化下发
+  delete props.allPages
   const POST_LIST_STYLE = siteConfig(
     'POST_LIST_STYLE',
     'Page',
@@ -82,28 +84,20 @@ async function filterByMemCache(allPosts, keyword) {
         : ''
     const articleInfo = post.title + post.summary + tagContent + categoryContent
     let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
-    const contentTextList = getPageContentText(post, page)
-    // console.log('全文搜索缓存', cacheKey, page != null)
-    post.results = []
-    let hitCount = 0
-    for (const i of contentTextList) {
-      const c = contentTextList[i]
-      if (!c) {
-        continue
-      }
-      const index = c.toLowerCase().indexOf(keyword)
+    const contentText = getPageContentText(post, page)
+    // 正文命中:截取命中处上下文作为摘要片段(主题按 post.results 数组渲染)
+    const results = []
+    if (contentText) {
+      const index = contentText.toLowerCase().indexOf(keyword)
       if (index > -1) {
         hit = true
-        hitCount += 1
-        post.results.push(c)
-      } else {
-        if ((post.results.length - 1) / hitCount < 3 || i === 0) {
-          post.results.push(c)
-        }
+        const start = Math.max(0, index - 60)
+        results.push(contentText.slice(start, index + keyword.length + 80))
       }
     }
     if (hit) {
-      filterPosts.push(post)
+      // 浅拷贝再挂 results,避免污染缓存层共享的文章对象
+      filterPosts.push({ ...post, results })
     }
   }
   return filterPosts

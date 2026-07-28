@@ -111,7 +111,7 @@ const isIterable = obj =>
 async function filterByMemCache(allPosts, keyword) {
   const filterPosts = []
   if (keyword) {
-    keyword = keyword.trim()
+    keyword = keyword.trim().toLowerCase()
   }
   for (const post of allPosts) {
     const cacheKey = getPageBlockCacheKey(post.id, post.lastEditedDate)
@@ -123,7 +123,7 @@ async function filterByMemCache(allPosts, keyword) {
         ? post.category.join(' ')
         : ''
     const articleInfo = post.title + post.summary + tagContent + categoryContent
-    let hit = articleInfo.indexOf(keyword) > -1
+    let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
     let indexContent = [post.summary]
     if (page && page.block) {
       const contentIds = Object.keys(page.block)
@@ -133,27 +133,26 @@ async function filterByMemCache(allPosts, keyword) {
         indexContent = appendText(indexContent, properties, 'caption')
       })
     }
-    // console.log('全文搜索缓存', cacheKey, page != null)
-    post.results = []
+    const results = []
     let hitCount = 0
-    for (const i of indexContent) {
-      const c = indexContent[i]
+    for (const c of indexContent) {
       if (!c) {
         continue
       }
-      const index = c.toLowerCase().indexOf(keyword.toLowerCase())
+      const index = c.toLowerCase().indexOf(keyword)
       if (index > -1) {
         hit = true
         hitCount += 1
-        post.results.push(c)
+        results.push(c)
       } else {
-        if ((post.results.length - 1) / hitCount < 3 || i === 0) {
-          post.results.push(c)
+        if ((results.length - 1) / hitCount < 3 || results.length === 0) {
+          results.push(c)
         }
       }
     }
     if (hit) {
-      filterPosts.push(post)
+      // 浅拷贝再挂 results,避免污染缓存层共享的文章对象
+      filterPosts.push({ ...post, results })
     }
   }
   return filterPosts
