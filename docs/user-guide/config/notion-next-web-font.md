@@ -21,7 +21,9 @@
 // START ************网站字体*****************
 // ['font-serif','font-sans'] 两种可选，分别是衬线和无衬线: 参考 https://www.jianshu.com/p/55e410bd2115
 // 后面空格隔开的 font-light 是字体粗细，留空是默认粗细；参考 https://www.tailwindcss.cn/docs/font-weight
-FONT_STYLE: process.env.NEXT_PUBLIC_FONT_STYLE || 'font-sans font-light',
+FONT_STYLE: process.env.NEXT_PUBLIC_FONT_STYLE || 'font-sans',
+// 注:默认字重已从 font-light(300) 调整为 400(细体在 Windows/低分屏上发虚);
+// 如需恢复细体,设置环境变量 NEXT_PUBLIC_FONT_STYLE='font-sans font-light'
 
 // 字体CSS 例如 https://npm.elemecdn.com/lxgw-wenkai-webfont@1.6.0/style.css
 // 如果需要引入第三方字体，可以在此添加URL

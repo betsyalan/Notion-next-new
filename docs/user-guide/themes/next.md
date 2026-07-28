@@ -59,7 +59,7 @@ NEXT_COLOR_BG: '#eeedee'
 | `NEXT_PREVIEW_CATEGORY_COUNT` | 见 config.js |
 | `NEXT_POST_HEADER_IMAGE_VISIBLE` | 见 config.js |
 | `NEXT_RIGHT_BAR` | 见 config.js |
-| `NEXT_STYLE_EDITORIAL` | 经典书院风视觉覆盖层，默认 true，false 回退原版样式 |
+| `NEXT_STYLE_EDITORIAL` | 现代简约视觉覆盖层（浅色藏蓝），默认 true，false 回退原版样式 |
 | `NEXT_RIGHT_LATEST_POSTS` | 见 config.js |
 | `NEXT_RIGHT_CATEGORY_LIST` | 见 config.js |
 | `NEXT_RIGHT_TAG_LIST` | 见 config.js |

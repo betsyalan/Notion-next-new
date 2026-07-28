@@ -16,7 +16,7 @@ jest.mock('@/lib/themeConsoleStyle', () => ({
   themeConsoleStyle: () => ''
 }))
 
-describe('next 主题书院风覆盖层', () => {
+describe('next 主题现代简约覆盖层', () => {
   it('CONFIG 默认开启 NEXT_STYLE_EDITORIAL', () => {
     expect(CONFIG.NEXT_STYLE_EDITORIAL).toBe(true)
   })
@@ -24,18 +24,18 @@ describe('next 主题书院风覆盖层', () => {
   it('开启时输出设计令牌,且不加载任何网络字体', () => {
     editorialFlag = true
     const html = renderToStaticMarkup(<Style />)
-    expect(html).toContain('--bronze:#C08A3E')
-    // 系统衬线栈,无网络字体链接(中文 webfont 体积大会阻塞首屏)
-    expect(html).toContain('--serif:"Songti SC"')
+    expect(html).toContain('--blue:#2563eb')
+    // 系统无衬线栈,无网络字体链接(中文 webfont 体积大会阻塞首屏)
+    expect(html).toContain('--sans:"PingFang SC"')
     expect(html).not.toContain('fonts.googleapis.com')
     expect(html).not.toContain('<link')
-    expect(html).toContain('--bg:#fbfaf8')
+    expect(html).toContain('--bg:#f8fafc')
   })
 
-  it('关闭时不输出书院风覆盖层', () => {
+  it('关闭时不输出现代简约覆盖层', () => {
     editorialFlag = false
     const html = renderToStaticMarkup(<Style />)
-    expect(html).not.toContain('--bronze')
+    expect(html).not.toContain('--navy')
     // 原有样式仍在
     expect(html).toContain('#theme-next .menu-link')
   })
@@ -57,7 +57,7 @@ describe('next 主题书院风覆盖层', () => {
     editorialFlag = true
     const html = renderToStaticMarkup(<Style />)
     expect(html).toContain('#posts-wrapper a.text-3xl')
-    // 文章卡标题与预览一致:衬线粗体(覆盖根节点继承的 font-light)
+    // 文章卡标题显式 700(避免继承根节点字重导致标题偏细)
     expect(html).toContain('font-weight: 700')
     expect(html).toContain('#posts-wrapper a.bg-gray-800')
     expect(html).toContain('#theme-next #nav li')
@@ -76,7 +76,7 @@ describe('next 主题书院风覆盖层', () => {
     editorialFlag = true
     const html = renderToStaticMarkup(<Style />)
     expect(html).toContain('.dark #theme-next')
-    expect(html).toContain('--bg:#141210')
+    expect(html).toContain('--bg:#0f172a')
     expect(html).toContain('.dark body')
     expect(html).toContain('.dark\\:bg-hexo-black-gray')
     // 暗色 Notion 选项色调色板(标签/分类徽章暗色下仍显色)
@@ -93,7 +93,7 @@ describe('next 主题书院风覆盖层', () => {
     editorialFlag = true
     const html = renderToStaticMarkup(<Style />)
     expect(html.indexOf('#eeedee')).toBeLessThan(
-      html.indexOf('--bronze:#C08A3E')
+      html.indexOf('--blue:#2563eb')
     )
   })
 })

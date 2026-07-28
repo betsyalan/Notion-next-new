@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-style="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 E · 浅色现代简约（藏蓝）— 风格对比演示</title>
+<style>
+  /* ============================================================
+     演示说明：结构 1:1 还原 next 主题首页（左栏 / 文章流 / 右栏 / 页脚）
+     右上角开关在「现行·书院风」与「提案·现代简约」之间切换，
+     只改变设计令牌（颜色 / 字体 / 字重 / 圆角 / 阴影），DOM 不变。
+     ============================================================ */
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  /* ---------- 提案：浅色现代简约 ---------- */
+  html[data-style="modern"] {
+    --bg:#f8fafc;            /* 冷调浅灰底 */
+    --surface:#ffffff;
+    --ink:#0f172a;           /* 主文字 slate-900 */
+    --body:#334155;          /* 正文 slate-700 */
+    --gray:#64748b;          /* 次要文字 slate-500 */
+    --faint:#94a3b8;         /* 弱化文字 slate-400 */
+    --line:#e2e8f0;          /* 边框 slate-200 */
+    --primary:#2563eb;       /* 交互蓝 blue-600 */
+    --navy:#1e3a5f;          /* 品牌藏蓝 */
+    --accent:#2563eb;        /* 点缀色 = 主色，克制 */
+    --chip:#eff6ff;          /* 标签浅蓝底 */
+    --chip-fg:#1d4ed8;
+    --topline:linear-gradient(90deg,#1e3a5f,#2563eb);
+    --title-font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    --body-font:"PingFang SC",-apple-system,BlinkMacSystemFont,"Hiragino Sans GB","Microsoft YaHei","Segoe UI","Noto Sans SC",sans-serif;
+    --title-weight:700;
+    --body-weight:400;
+    --radius:12px;
+    --radius-sm:8px;
+    --shadow:0 1px 2px rgba(15,23,42,.04);
+    --shadow-hover:0 8px 24px rgba(15,23,42,.08);
+    --btn-bg:#0f172a;
+    --body-leading:1.8;
+  }
+
+  /* ---------- 现行：经典书院风 ---------- */
+  html[data-style="editorial"] {
+    --bg:#fbfaf8;            /* 暖白 */
+    --surface:#ffffff;
+    --ink:#1a202c;
+    --body:#4b5563;
+    --gray:#6b7280;
+    --faint:#9ca3af;
+    --line:#e8e6e1;
+    --primary:#2f6fde;
+    --navy:#1E3A5F;
+    --accent:#C08A3E;        /* 青铜点缀 */
+    --chip:#f7f1e6;          /* 宣纸米色 */
+    --chip-fg:#8a5a1e;
+    --topline:#C08A3E;
+    --title-font:"Songti SC","STSong","SimSun",serif;
+    --body-font:"PingFang SC",-apple-system,"Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --title-weight:700;
+    --body-weight:300;       /* 现行 font-light */
+    --radius:4px;
+    --radius-sm:4px;
+    --shadow:0 1px 3px rgba(26,32,44,.06);
+    --shadow-hover:0 6px 18px rgba(26,32,44,.10);
+    --btn-bg:#1a202c;
+    --body-leading:1.9;
+  }
+
+  body {
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body-font);
+    font-weight:var(--body-weight);
+    transition:background .25s ease;
+  }
+  a { text-decoration:none; color:inherit; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 20px; }
+
+  /* ---------- 风格切换开关 ---------- */
+  .switcher {
+    position:fixed; top:14px; right:16px; z-index:99;
+    display:flex; background:#0f172a; border-radius:999px; padding:4px;
+    box-shadow:0 4px 16px rgba(15,23,42,.25);
+  }
+  .switcher button {
+    border:0; cursor:pointer; font-size:13px; padding:7px 14px;
+    border-radius:999px; background:transparent; color:#94a3b8;
+    font-family:inherit; transition:all .2s ease;
+  }
+  .switcher button.on { background:#fff; color:#0f172a; font-weight:600; }
+
+  /* ---------- 顶部装饰线 + 导航 ---------- */
+  .topline { height:3px; background:var(--topline); }
+  .topnav { background:var(--surface); border-bottom:1px solid var(--line); }
+  .topnav .wrap { display:flex; align-items:center; justify-content:space-between; height:56px; }
+  .brand { font-family:var(--title-font); font-weight:var(--title-weight); font-size:18px; color:var(--navy); letter-spacing:.08em; }
+  .menu { display:flex; gap:28px; font-size:14px; color:var(--gray); }
+  .menu a { position:relative; padding:4px 0; transition:color .2s ease; }
+  .menu a:hover, .menu a.active { color:var(--primary); }
+  .menu a.active::after {
+    content:''; position:absolute; left:0; right:0; bottom:-2px; height:2px;
+    background:var(--primary); border-radius:2px;
+  }
+
+  /* ---------- 三栏布局 ---------- */
+  .layout { display:grid; grid-template-columns:240px 1fr 280px; gap:24px; padding:32px 0 48px; }
+  .card {
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+
+  /* 左栏 */
+  .side-left .card { padding:24px 20px; margin-bottom:20px; }
+  .logo-block { text-align:center; }
+  .logo-block .logo {
+    font-family:var(--title-font); font-weight:var(--title-weight);
+    font-size:21px; color:var(--navy); letter-spacing:.18em; text-indent:.18em;
+  }
+  .logo-block .logo::after {
+    content:''; display:block; width:44px; height:2px; margin:10px auto 0;
+    background:var(--accent); border-radius:2px;
+  }
+  .logo-block .motto { margin-top:12px; font-size:12px; color:var(--faint); }
+  .left-menu { list-style:none; margin-top:4px; }
+  .left-menu a {
+    display:flex; align-items:center; gap:10px; padding:10px 12px;
+    border-radius:var(--radius-sm); font-size:14px; color:var(--body);
+    transition:all .2s ease;
+  }
+  .left-menu a:hover { color:var(--primary); background:var(--chip); }
+  .left-menu svg { width:16px; height:16px; stroke:currentColor; flex:none; }
+  .search-box {
+    display:flex; align-items:center; gap:8px; margin-top:16px;
+    border:1px solid var(--line); border-radius:var(--radius-sm);
+    padding:9px 12px; background:var(--surface);
+  }
+  .search-box input {
+    border:0; outline:0; background:transparent; font-size:13px; width:100%;
+    color:var(--ink); font-family:inherit;
+  }
+  .search-box svg { width:15px; height:15px; stroke:var(--faint); flex:none; }
+  .avatar {
+    width:72px; height:72px; border-radius:50%; margin:4px auto 12px;
+    background:linear-gradient(135deg,var(--navy),var(--primary));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:24px; font-family:var(--title-font); font-weight:var(--title-weight);
+  }
+  .author { text-align:center; font-family:var(--title-font); font-size:18px; font-weight:var(--title-weight); }
+  .bio { text-align:center; font-size:12.5px; color:var(--gray); margin-top:8px; line-height:1.7; }
+  .stats { display:flex; justify-content:center; gap:24px; margin-top:16px; }
+  .stats b { display:block; font-size:17px; font-weight:600; text-align:center; font-variant-numeric:tabular-nums; }
+  .stats span { font-size:12px; color:var(--faint); }
+
+  /* 文章卡 */
+  .post { padding:32px 36px; margin-bottom:24px; }
+  .post:hover { box-shadow:var(--shadow-hover); }
+  .post .meta { font-size:12.5px; color:var(--faint); display:flex; gap:14px; margin-bottom:12px; font-variant-numeric:tabular-nums; }
+  .post h2 { margin-bottom:14px; }
+  .post h2 a {
+    font-family:var(--title-font); font-weight:var(--title-weight);
+    font-size:24px; line-height:1.4; color:var(--ink); transition:color .2s ease;
+  }
+  .post h2 a:hover { color:var(--primary); }
+  .post p { color:var(--body); font-size:14.5px; line-height:var(--body-leading); margin-bottom:20px; }
+  .btn {
+    display:inline-block; background:var(--btn-bg); color:#fff; font-size:13px;
+    padding:10px 18px; border-radius:var(--radius-sm); transition:background .2s ease;
+  }
+  .btn:hover { background:var(--primary); }
+  .post .tags { display:flex; gap:8px; margin-top:18px; }
+  .chip {
+    font-size:12px; padding:4px 12px; border-radius:999px;
+    background:var(--chip); color:var(--chip-fg); transition:all .2s ease;
+  }
+  .chip:hover { background:var(--primary); color:#fff; }
+
+  /* 右栏 */
+  .side-right .card { padding:22px 20px; margin-bottom:20px; }
+  .side-right h3 {
+    font-family:var(--title-font); font-size:15px; font-weight:var(--title-weight);
+    padding-bottom:12px; margin-bottom:12px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:8px; color:var(--ink);
+  }
+  .side-right h3 svg { width:15px; height:15px; stroke:var(--accent); }
+  .latest a {
+    display:block; font-size:13.5px; color:var(--body); padding:7px 0;
+    line-height:1.5; transition:color .2s ease;
+    border-bottom:1px dashed var(--line);
+  }
+  .latest a:last-child { border-bottom:0; }
+  .latest a:hover { color:var(--primary); }
+  .cat-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 10px; border-radius:var(--radius-sm); font-size:13.5px;
+    color:var(--body); transition:all .2s ease;
+  }
+  .cat-row:hover { background:var(--chip); color:var(--primary); }
+  .cat-row .n { font-size:12px; color:var(--faint); font-variant-numeric:tabular-nums; }
+  .tagcloud { display:flex; flex-wrap:wrap; gap:8px; }
+
+  /* 页脚 */
+  footer { border-top:1px solid var(--line); padding:28px 0 40px; text-align:center; }
+  footer .f-title { font-family:var(--title-font); font-weight:var(--title-weight); font-size:14px; margin-bottom:8px; }
+  footer p { font-size:12px; color:var(--faint); line-height:1.9; }
+
+  /* ---------- 令牌对照表 ---------- */
+  .compare { padding:0 0 56px; }
+  .compare .card { padding:28px 32px; }
+  .compare h2 { font-family:var(--title-font); font-size:18px; font-weight:var(--title-weight); margin-bottom:18px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--gray); font-weight:500; font-size:12px; letter-spacing:.05em; }
+  td:first-child { color:var(--ink); font-weight:500; white-space:nowrap; }
+  td { color:var(--body); }
+  .sw { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; border:1px solid rgba(0,0,0,.08); }
+
+  @media (max-width:1024px) { .layout { grid-template-columns:1fr; } .side-left,.side-right { display:none; } }
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <button id="btn-ed" onclick="setStyle('editorial')">现行 · 书院风</button>
+  <button id="btn-mo" class="on" onclick="setStyle('modern')">提案 · 现代简约</button>
+</div>
+
+<div class="topline"></div>
+<nav class="topnav">
+  <div class="wrap">
+    <a class="brand" href="#">藏蓝</a>
+    <div class="menu">
+      <a href="#" class="active">首页</a><a href="#">分类</a><a href="#">标签</a><a href="#">归档</a><a href="#">搜索</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="layout">
+
+    <!-- 左栏 -->
+    <aside class="side-left">
+      <div class="card logo-block">
+        <div class="logo">藏蓝</div>
+        <div class="motto">警察大学规划与公安联考规划</div>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input placeholder="搜索文章…">
+        </div>
+      </div>
+      <div class="card">
+        <ul class="left-menu">
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 10.5L12 3l9 7.5M5 9.5V21h14V9.5"/></svg>首页</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>分类</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4L11 3H4v7l9.6 10.4a2 2 0 002.8 0l4.2-4.2a2 2 0 000-2.8z"/><circle cx="8" cy="7" r="1"/></svg>标签</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 5h18M3 12h18M3 19h12"/></svg>归档</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="avatar">藏</div>
+        <div class="author">藏蓝</div>
+        <div class="bio">专注警校报考、四年规划与公安联考备考的内容博客</div>
+        <div class="stats">
+          <div><b>86</b><span>文章</span></div>
+          <div><b>6</b><span>分类</span></div>
+          <div><b>32</b><span>标签</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 文章流 -->
+    <main>
+      <article class="card post">
+        <div class="meta"><span>2026-07-20</span><span>知行合一</span><span>约 8 分钟</span></div>
+        <h2><a href="#">公安联考四年规划：从大一到大四的完整路线图</a></h2>
+        <p>联考不是大三下学期才开始的事。本文按学期拆解四年准备节奏：大一大二打好行测与法律基础，大三系统刷题与体测达标，大四冲刺与岗位选择，并给出每个阶段可检查的目标清单……</p>
+        <a class="btn" href="#">阅读全文</a>
+        <div class="tags"><a class="chip" href="#">公安联考</a><a class="chip" href="#">四年规划</a></div>
+      </article>
+
+      <article class="card post">
+        <div class="meta"><span>2026-07-12</span><span>知行合一</span><span>约 6 分钟</span></div>
+        <h2><a href="#">公安联考冲刺计划：最后 100 天怎么做</a></h2>
+        <p>冲刺阶段的核心不是学新知识，而是把已会的内容稳定输出。行测按模块限时训练、申论保持每周两篇完整写作、体测项目按达标线倒排训练量，附每日时间表示例……</p>
+        <a class="btn" href="#">阅读全文</a>
+        <div class="tags"><a class="chip" href="#">冲刺</a><a class="chip" href="#">时间表</a></div>
+      </article>
+
+      <article class="card post">
+        <div class="meta"><span>2026-07-03</span><span>心情随笔</span><span>约 4 分钟</span></div>
+        <h2><a href="#">入学清单：警校新生报到前该准备什么</a></h2>
+        <p>从证件材料到体能储备，从心理预期到行李取舍。警校开学和普通大学很不一样，提前知道这些事，报到周会从容很多……</p>
+        <a class="btn" href="#">阅读全文</a>
+        <div class="tags"><a class="chip" href="#">新生指南</a></div>
+      </article>
+    </main>
+
+    <!-- 右栏 -->
+    <aside class="side-right">
+      <div class="card latest">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>最新文章</h3>
+        <a href="#">公安联考四年规划：从大一到大四的完整路线图</a>
+        <a href="#">公安联考冲刺计划：最后 100 天怎么做</a>
+        <a href="#">入学清单：警校新生报到前该准备什么</a>
+        <a href="#">数据结构与算法：期末复习提纲</a>
+      </div>
+      <div class="card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/></svg>文章分类</h3>
+        <a class="cat-row" href="#"><span>知行合一</span><span class="n">24</span></a>
+        <a class="cat-row" href="#"><span>技术分享</span><span class="n">18</span></a>
+        <a class="cat-row" href="#"><span>心情随笔</span><span class="n">12</span></a>
+        <a class="cat-row" href="#"><span>往期整理</span><span class="n">9</span></a>
+      </div>
+      <div class="card">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20.6 13.4L11 3H4v7l9.6 10.4a2 2 0 002.8 0l4.2-4.2a2 2 0 000-2.8z"/></svg>文章标签</h3>
+        <div class="tagcloud">
+          <a class="chip" href="#">公安联考</a><a class="chip" href="#">四年规划</a>
+          <a class="chip" href="#">行测</a><a class="chip" href="#">申论</a>
+          <a class="chip" href="#">体测</a><a class="chip" href="#">新生指南</a>
+          <a class="chip" href="#">时间表</a><a class="chip" href="#">期末复习</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 令牌对照 -->
+  <section class="compare">
+    <div class="card">
+      <h2>设计令牌对照（现行书院风 → 提案现代简约）</h2>
+      <table>
+        <tr><th>维度</th><th>现行 · 书院风</th><th>提案 · 现代简约</th></tr>
+        <tr><td>页面底色</td><td><span class="sw" style="background:#fbfaf8"></span>#fbfaf8 暖白</td><td><span class="sw" style="background:#f8fafc"></span>#f8fafc 冷调浅灰</td></tr>
+        <tr><td>品牌/标题色</td><td><span class="sw" style="background:#1E3A5F"></span>#1E3A5F 藏蓝（保留）</td><td><span class="sw" style="background:#1e3a5f"></span>#1e3a5f 藏蓝（不变，契合站名）</td></tr>
+        <tr><td>交互主色</td><td><span class="sw" style="background:#2f6fde"></span>#2f6fde</td><td><span class="sw" style="background:#2563eb"></span>#2563eb（对比度更高）</td></tr>
+        <tr><td>点缀色</td><td><span class="sw" style="background:#C08A3E"></span>#C08A3E 青铜（暖）</td><td>取消青铜，点缀 = 主色蓝，更克制</td></tr>
+        <tr><td>标题字体</td><td>宋体系衬线 Songti SC</td><td>无衬线系统栈（与正文同族，靠字重分层）</td></tr>
+        <tr><td>正文字重</td><td>300（font-light，偏细发虚）</td><td>400 regular（长文可读性更好）</td></tr>
+        <tr><td>正文行高</td><td>1.9（偏疏）</td><td>1.8（舒适且信息密度更高）</td></tr>
+        <tr><td>卡片圆角</td><td>4px（偏方正古典）</td><td>12px / 8px（现代柔和）</td></tr>
+        <tr><td>标签样式</td><td>米色底 #f7f1e6</td><td>浅蓝底 #eff6ff，与主色同族</td></tr>
+        <tr><td>顶部装饰线</td><td>青铜纯色 3px</td><td>藏蓝 → 蓝 渐变 3px（呼应品牌）</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-title">藏蓝</div>
+    <p>© 2021–2026 藏蓝 · 警察大学规划与公安联考规划<br>本页为风格演示模板，静态页面，不读取任何线上数据</p>
+  </footer>
+</div>
+
+<script>
+  function setStyle(s) {
+    document.documentElement.setAttribute('data-style', s)
+    document.getElementById('btn-ed').classList.toggle('on', s === 'editorial')
+    document.getElementById('btn-mo').classList.toggle('on', s === 'modern')
+  }
+</script>
+</body>
+</html>
