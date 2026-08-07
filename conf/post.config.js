@@ -28,7 +28,10 @@ module.exports = {
   POST_RECOMMEND_COUNT: process.env.NEXT_PUBLIC_POST_RECOMMEND_COUNT || 6, // 推荐文章数量
   LATEST_POST_COUNT: process.env.NEXT_PUBLIC_LATEST_POST_COUNT || 6, // 最新文章数量
   POSTS_PER_PAGE: process.env.NEXT_PUBLIC_POST_PER_PAGE || 12, // post counts per page
-  POSTS_SORT_BY: process.env.NEXT_PUBLIC_POST_SORT_BY || 'notion', // 排序方式 'date'按时间,'notion'由notion控制
+  // 排序方式 'date'按时间,'notion'由notion控制;
+  // 注意:Notion 服务端已改为 client mode(2026-08 起),queryCollection 不再返回视图排序结果,
+  // 'notion' 模式下站端只能拿到创建顺序(新文章排最后),故默认改为 'date',与数据库 Table 视图的日期倒序一致
+  POSTS_SORT_BY: process.env.NEXT_PUBLIC_POST_SORT_BY || 'date',
 
   // 文章过期提醒配置 p.s. 目前此功能暂时只适用于heo主题
   ARTICLE_EXPIRATION_DAYS:
