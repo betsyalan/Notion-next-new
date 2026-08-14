@@ -21,6 +21,7 @@ const MouseParticle = () => {
     const MAX_PARTICLES = 150 // 粒子上限,防止高频 mousemove 卡顿
     const SPAWN_PER_MOVE = 2 // 每次鼠标移动生成的粒子数
     const LINK_DISTANCE = 90 // 粒子间连线的最大距离(px)
+    const LINK_DIST_SQ = LINK_DISTANCE * LINK_DISTANCE // 距离平方阈值,避免内层循环开方
     const LIFE_DECAY = 0.008 // 每帧透明度衰减量
 
     // 创建全屏透明画布,置于内容层之上(否则会被卡片白色背景完全遮挡),
@@ -44,7 +45,7 @@ const MouseParticle = () => {
 
     const particles = [] // 存活的粒子列表
 
-    // 鼠标移动时在光标处生成粒子
+    // 鼠标移动时在光标处生成粒子;若动画循环已休眠则唤醒
     const onMouseMove = e => {
       for (let i = 0; i < SPAWN_PER_MOVE; i++) {
         particles.push({
@@ -60,6 +61,10 @@ const MouseParticle = () => {
       // 超出上限时移除最老的粒子
       if (particles.length > MAX_PARTICLES) {
         particles.splice(0, particles.length - MAX_PARTICLES)
+      }
+      // 动画循环休眠中则重新启动
+      if (animationId === null) {
+        animationId = requestAnimationFrame(animate)
       }
     }
     window.addEventListener('mousemove', onMouseMove)
@@ -89,13 +94,22 @@ const MouseParticle = () => {
         ctx.fill()
       }
 
+      // 全部粒子消亡后:清空画布并停止动画循环,空闲时零开销
+      if (particles.length === 0) {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+        animationId = null
+        return
+      }
+
       // 绘制近距离粒子间的连线,透明度随距离线性衰减
+      // 用距离平方比较,只有真正需要画线时才开方
       for (let a = 0; a < particles.length; a++) {
         for (let b = a + 1; b < particles.length; b++) {
           const dx = particles[a].x - particles[b].x
           const dy = particles[a].y - particles[b].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < LINK_DISTANCE) {
+          const distSq = dx * dx + dy * dy
+          if (distSq < LINK_DIST_SQ) {
+            const dist = Math.sqrt(distSq)
             // 连线透明度同时受距离和两个粒子剩余生命影响
             const alpha =
               (1 - dist / LINK_DISTANCE) *
@@ -113,11 +127,13 @@ const MouseParticle = () => {
 
       animationId = requestAnimationFrame(animate)
     }
-    animate()
+    // 初始无粒子,不启动循环,等第一次鼠标移动时唤醒
 
     // 组件卸载时清理:停止动画、移除监听、移除画布
     return () => {
-      cancelAnimationFrame(animationId)
+      if (animationId !== null) {
+        cancelAnimationFrame(animationId)
+      }
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('resize', resize)
       canvas.parentNode?.removeChild(canvas)
