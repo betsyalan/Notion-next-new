@@ -111,6 +111,7 @@ const ExternalPlugin = props => {
   const IMG_SHADOW = siteConfig('IMG_SHADOW', null, NOTION_CONFIG)
   const ANIMATE_CSS_URL = siteConfig('ANIMATE_CSS_URL', null, NOTION_CONFIG)
   const MOUSE_FOLLOW = siteConfig('MOUSE_FOLLOW', null, NOTION_CONFIG)
+  const MOUSE_PARTICLE = siteConfig('MOUSE_PARTICLE', null, NOTION_CONFIG)
   const CUSTOM_EXTERNAL_CSS = siteConfig(
     'CUSTOM_EXTERNAL_CSS',
     null,
@@ -243,6 +244,7 @@ const ExternalPlugin = props => {
       <GlobalStyle />
       {ENABLE_ICON_FONT && <IconFont />}
       {MOUSE_FOLLOW && <MouseFollow />}
+      {MOUSE_PARTICLE && <MouseParticle />}
       {pluginsIdle && THEME_SWITCH && <ThemeSwitch />}
       {DEBUG && <DebugPanel />}
       {ANALYTICS_ACKEE_TRACKER && <Ackee />}
@@ -515,6 +517,9 @@ const Fireworks = dynamic(() => import('@/components/Fireworks'), {
   ssr: false
 })
 const MouseFollow = dynamic(() => import('@/components/MouseFollow'), {
+  ssr: false
+})
+const MouseParticle = dynamic(() => import('@/components/MouseParticle'), {
   ssr: false
 })
 const Nest = dynamic(() => import('@/components/Nest'), { ssr: false })

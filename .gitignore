@@ -64,3 +64,4 @@ tsconfig.tsbuildinfo
 webpack-internal:/
 .worktrees/
 logs/
+.gstack/

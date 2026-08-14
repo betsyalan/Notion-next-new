@@ -19,6 +19,9 @@ module.exports = {
   MOUSE_FOLLOW_EFFECT_TYPE: 11, // 1-12
   MOUSE_FOLLOW_EFFECT_COLOR: '#ef672a', // 鼠标点击特效颜色 #xxxxxx 或者 rgba(r,g,b,a)
 
+  // 鼠标跟随粒子特效(粒子拖尾+连线,仿 DeepSeek 风格,深浅模式自适应)
+  MOUSE_PARTICLE: process.env.NEXT_PUBLIC_MOUSE_PARTICLE || true, // 开关
+
   // 樱花飘落特效
   SAKURA: process.env.NEXT_PUBLIC_SAKURA || false, // 开关
   // 漂浮线段特效
